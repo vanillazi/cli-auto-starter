@@ -1,5 +1,6 @@
 package cn.vanillazi.tool;
 
+import cn.vanillazi.commons.fx.util.TipUtils;
 import cn.vanillazi.commons.fx.util.VersionUtils;
 import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
 import cn.vanillazi.commons.fx.view.tray.MenuInfo;
@@ -143,6 +144,12 @@ public class App {
         var gson=new Gson();
         var json= Files.readString(path, StandardCharsets.UTF_8);
         var type=new TypeToken<List<StartupItem>>(){}.getType();
-        return gson.fromJson(json,type);
+        try {
+            return gson.fromJson(json, type);
+        }catch (Throwable e){
+            e.printStackTrace();
+            TipUtils.error(e.getMessage());
+        }
+        return Collections.emptyList();
     }
 }
