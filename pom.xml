@@ -102,6 +102,9 @@
     <profiles>
         <profile>
             <id>dist</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -116,6 +119,9 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
+                                    <withJre>false</withJre>
+                                    <outputZip>true</outputZip>
+                                    <customRuntimeImage>true</customRuntimeImage>
                                     <scriptConfigFile>${project.basedir}/build-config/build.properties</scriptConfigFile>
                                     <resources>
                                         <resource>
