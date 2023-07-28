@@ -144,6 +144,9 @@ public class App {
         var gson=new Gson();
         var json= Files.readString(path, StandardCharsets.UTF_8);
         var type=new TypeToken<List<StartupItem>>(){}.getType();
+        if(json.isEmpty() || json.isEmpty()){
+            return Collections.emptyList();
+        }
         try {
             return gson.fromJson(json, type);
         }catch (Throwable e){
