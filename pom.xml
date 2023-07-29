@@ -87,6 +87,12 @@
         </dependency>
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
+            <artifactId>fx-codegen</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.vanillazi.commons</groupId>
             <artifactId>commons-win32</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

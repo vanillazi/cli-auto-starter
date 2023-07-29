@@ -1,5 +1,6 @@
 package cn.vanillazi.tool;
 
+import cn.vanillazi.commons.fx.property.PropertyUtils;
 import cn.vanillazi.commons.fx.util.TipUtils;
 import cn.vanillazi.commons.fx.util.VersionUtils;
 import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
@@ -31,15 +32,36 @@ public class App {
     public static final String iconPath="file:"+new File("asset/logo.png").getAbsolutePath();
     private static final Logger logger=Logger.getLogger(App.class.getName());
 
+    public static MenuInfo toMenuInfo(StartupItem si){
+        var context=new CliExecutableContext(si);
+        var mi=PropertyUtils.createPropertyClass(MenuInfo.class);
+        mi.setName(si.getName());
+        mi.setDisplayName(si.getName());
+        mi.setTooltip(si.getDescription());
+        mi.setSelectable(true);
+        mi.setTag(context);
+        mi.setEventHandler(e->{
+            if(context.isStarted()){
+                mi.setDisplayName(mi.getName());
+                context.stop();
+            }else{
+                mi.setDisplayName(mi.getName()+"(已启动)");
+                context.start();
+            }
+        });
+        if(si.getAutoStart()){
+            context.start();
+            mi.setDisplayName(mi.getName()+"(已启动)");
+        }
+        return mi;
+    }
+
     public static void main(String[] args) throws AWTException, IOException {
         if(!SystemTray.isSupported()){
             logger.severe(ResourceBundles.theSystemTrayIsNotSupported());
             return;
         }
-        //the application will continue to run normally even
-        //after the last window is closed
         Platform.setImplicitExit(false);
-        //scan all installed jdk
         var tray=SystemTray.getSystemTray();
         Image image=loadTrayIcon();
         var trayIcon=new TrayIcon(image);
@@ -48,52 +70,32 @@ public class App {
         tray.add(trayIcon);
         var menuInfos=new ArrayList<MenuInfo>();
 
-
         var sis=loadStartupItems();
         var menus=sis.stream().map(si->{
-            var context=new CliExecutableContext(si);
-            var mi=MenuInfo.builder()
-                    .name(si.getName())
-                    .displayName(si.getName())
-                    .tooltip(si.getDescription())
-                    .selectable(true)
-                    .tag(context)
-                    .eventHandler(e->{
-                        if(context.isStarted()){
-                            context.stop();
-                        }else{
-                            context.start();
-                        }
-                    })
-                    .build();
-            if(si.getAutoStart()){
-                context.start();
-            }
+            var mi=toMenuInfo(si);
             menuInfos.add(mi);
             return mi;
         }).collect(Collectors.toList());
-        var config= MenuInfo.builder()
-                .name("config")
-                .displayName(ResourceBundles.config())
-                .eventHandler(e->editConfigFile())
-                .build();
-        var about= MenuInfo.builder()
-                .name("about")
-                .displayName(ResourceBundles.about())
-                .eventHandler(e->showAboutDialog())
-                .build();
-        var exit=MenuInfo.builder()
-                .name("exit")
-                .displayName(ResourceBundles.exit())
-                .eventHandler(e->{
+        var config= PropertyUtils.createPropertyClass(MenuInfo.class);
+        config.setName("config");
+        config.setDisplayName(ResourceBundles.config());
+        config.setEventHandler(e->editConfigFile());
+        var about= PropertyUtils.createPropertyClass(MenuInfo.class);
+        config.setName("about");
+        config.setDisplayName(ResourceBundles.about());
+        config.setEventHandler(e->showAboutDialog());
+
+        var exit=PropertyUtils.createPropertyClass(MenuInfo.class);
+        config.setName("exit");
+        config.setDisplayName(ResourceBundles.exit());
+        config.setEventHandler(e->{
                     menus.forEach(m->{
                         if(m.getTag() instanceof CliExecutableContext context){
                             context.stop();
                         }
                     });
                     System.exit(0);
-                })
-                .build();
+                });
         menuInfos.add(config);
         menuInfos.add(about);
         menuInfos.add(exit);
