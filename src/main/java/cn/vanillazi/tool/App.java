@@ -32,27 +32,53 @@ public class App {
     public static final String iconPath="file:"+new File("asset/logo.png").getAbsolutePath();
     private static final Logger logger=Logger.getLogger(App.class.getName());
 
-    public static MenuInfo toMenuInfo(StartupItem si){
-        var context=new CliExecutableContext(si);
+    public static MenuInfo toMenuInfo(StartupItem startupItem){
         var mi=PropertyUtils.createPropertyClass(MenuInfo.class);
-        mi.setName(si.getName());
-        mi.setDisplayName(si.getName());
-        mi.setTooltip(si.getDescription());
-        //mi.setSelectable(true);
+        var context=new CliExecutableContext(startupItem, new CommandProcessListener() {
+            @Override
+            public void onStarted() {
+                try {
+                    Platform.runLater(() -> {
+                        mi.setDisplayName(mi.getName() + ResourceBundles.started());
+                    });
+                }catch (Throwable e){
+                    mi.setDisplayName(mi.getName() + ResourceBundles.started());
+                }
+            }
+
+            @Override
+            public void onFinished() {
+                try {
+                    Platform.runLater(() -> {
+                        mi.setDisplayName(mi.getName());
+                    });
+                }catch (Throwable e){
+                    mi.setDisplayName(mi.getName());
+                }
+            }
+
+            @Override
+            public void onError(String msg, Throwable e) {
+                try {
+                    Platform.runLater(() -> {
+                        mi.setDisplayName(mi.getName());
+                    });
+                }catch (Throwable e1){
+                    mi.setDisplayName(mi.getName());
+                }
+            }
+        });
+        mi.setName(startupItem.getName());
+        mi.setDisplayName(startupItem.getName());
+        mi.setTooltip(startupItem.getDescription());
         mi.setTag(context);
         mi.setEventHandler(e->{
             if(context.isStarted()){
-                mi.setDisplayName(mi.getName());
                 context.stop();
             }else{
-                mi.setDisplayName(mi.getName()+ResourceBundles.started());
                 context.start();
             }
         });
-        if(si.getAutoStart()){
-            context.start();
-            mi.setDisplayName(mi.getName()+ResourceBundles.started());
-        }
         return mi;
     }
 
@@ -70,9 +96,9 @@ public class App {
         tray.add(trayIcon);
         var menuInfos=new ArrayList<MenuInfo>();
 
-        var sis=loadStartupItems();
-        var menus=sis.stream().map(si->{
-            var mi=toMenuInfo(si);
+        var startupItems=loadStartupItems();
+        var menus=startupItems.stream().map(startupItem->{
+            var mi=toMenuInfo(startupItem);
             menuInfos.add(mi);
             return mi;
         }).collect(Collectors.toList());
@@ -104,6 +130,14 @@ public class App {
         SystemTrayWindow.setIconPath(iconPath);
         SystemTrayWindow.setMenuInfos(menuInfos);
         trayIcon.addMouseListener(new TrayWindowStarter(SystemTrayWindow.class));
+        menus.forEach(m->{
+            if(m.getTag() instanceof CliExecutableContext context){
+                if(context.getStartupItem().getAutoStart()){
+                    context.start();
+                }
+            }
+        });
+
     }
 
     private static void editConfigFile() {
