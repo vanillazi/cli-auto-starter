@@ -38,20 +38,20 @@ public class App {
         mi.setName(si.getName());
         mi.setDisplayName(si.getName());
         mi.setTooltip(si.getDescription());
-        mi.setSelectable(true);
+        //mi.setSelectable(true);
         mi.setTag(context);
         mi.setEventHandler(e->{
             if(context.isStarted()){
                 mi.setDisplayName(mi.getName());
                 context.stop();
             }else{
-                mi.setDisplayName(mi.getName()+"(已启动)");
+                mi.setDisplayName(mi.getName()+ResourceBundles.started());
                 context.start();
             }
         });
         if(si.getAutoStart()){
             context.start();
-            mi.setDisplayName(mi.getName()+"(已启动)");
+            mi.setDisplayName(mi.getName()+ResourceBundles.started());
         }
         return mi;
     }
@@ -81,14 +81,14 @@ public class App {
         config.setDisplayName(ResourceBundles.config());
         config.setEventHandler(e->editConfigFile());
         var about= PropertyUtils.createPropertyClass(MenuInfo.class);
-        config.setName("about");
-        config.setDisplayName(ResourceBundles.about());
-        config.setEventHandler(e->showAboutDialog());
+        about.setName("about");
+        about.setDisplayName(ResourceBundles.about());
+        about.setEventHandler(e->showAboutDialog());
 
         var exit=PropertyUtils.createPropertyClass(MenuInfo.class);
-        config.setName("exit");
-        config.setDisplayName(ResourceBundles.exit());
-        config.setEventHandler(e->{
+        exit.setName("exit");
+        exit.setDisplayName(ResourceBundles.exit());
+        exit.setEventHandler(e->{
                     menus.forEach(m->{
                         if(m.getTag() instanceof CliExecutableContext context){
                             context.stop();
@@ -99,6 +99,7 @@ public class App {
         menuInfos.add(config);
         menuInfos.add(about);
         menuInfos.add(exit);
+        SystemTrayWindow.setSelectedExtraText(ResourceBundles.started());
         SystemTrayWindow.enableMultiSelectMode();
         SystemTrayWindow.setIconPath(iconPath);
         SystemTrayWindow.setMenuInfos(menuInfos);
