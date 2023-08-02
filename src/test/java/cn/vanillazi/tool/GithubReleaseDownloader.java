@@ -13,7 +13,7 @@ public class GithubReleaseDownloader {
 
     @BeforeAll
     public static void setup() throws IOException {
-        github= GitHub.connectUsingOAuth("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");
+        github= GitHub.connectUsingOAuth("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");
 
     }
 

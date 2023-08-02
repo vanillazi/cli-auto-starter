@@ -1,16 +1,22 @@
 package cn.vanillazi.tool;
 
 import cn.vanillazi.commons.fx.property.PropertyUtils;
+
 import cn.vanillazi.commons.fx.util.TipUtils;
 
 import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
+
 import cn.vanillazi.commons.fx.view.tray.MenuInfo;
 import cn.vanillazi.commons.fx.view.tray.SystemTrayWindow;
 import cn.vanillazi.commons.fx.view.tray.TrayWindowStarter;
+
 import cn.vanillazi.tool.config.ResourceBundles;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import javafx.application.Platform;
+
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
@@ -25,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class App {
 
@@ -58,12 +63,12 @@ public class App {
             }
 
             @Override
-            public void onError(String msg, Throwable e) {
+            public void onError(String msg, Throwable cause) {
                 try {
                     Platform.runLater(() -> {
                         mi.setDisplayName(mi.getName());
                     });
-                }catch (Throwable e1){
+                }catch (Throwable e){
                     mi.setDisplayName(mi.getName());
                 }
             }
@@ -81,7 +86,7 @@ public class App {
         });
         return mi;
     }
-
+    private static List<MenuInfo> menuItemStarters;
     public static void main(String[] args) throws AWTException, IOException {
         if(!SystemTray.isSupported()){
             logger.severe(ResourceBundles.theSystemTrayIsNotSupported());
@@ -97,29 +102,22 @@ public class App {
         var menuInfos=new ArrayList<MenuInfo>();
 
         var startupItems=loadStartupItems();
-        var menus=startupItems.stream().map(startupItem->{
-            var mi=toMenuInfo(startupItem);
-            menuInfos.add(mi);
-            return mi;
-        }).collect(Collectors.toList());
+        menuItemStarters=startupItems.stream().map(App::toMenuInfo).toList();
+        menuInfos.addAll(menuItemStarters);
         var config= PropertyUtils.createPropertyClass(MenuInfo.class);
-        config.setName("config");
+        config.setName(ResourceBundles.config());
         config.setDisplayName(ResourceBundles.config());
         config.setEventHandler(e->editConfigFile());
         var about= PropertyUtils.createPropertyClass(MenuInfo.class);
-        about.setName("about");
+        about.setName(ResourceBundles.about());
         about.setDisplayName(ResourceBundles.about());
         about.setEventHandler(e->showAboutDialog());
 
         var exit=PropertyUtils.createPropertyClass(MenuInfo.class);
-        exit.setName("exit");
+        exit.setName(ResourceBundles.exit());
         exit.setDisplayName(ResourceBundles.exit());
         exit.setEventHandler(e->{
-                    menus.forEach(m->{
-                        if(m.getTag() instanceof CliExecutableContext context){
-                            context.stop();
-                        }
-                    });
+                    stopAllRunningCliProcess();
                     System.exit(0);
                 });
         menuInfos.add(config);
@@ -130,28 +128,39 @@ public class App {
         SystemTrayWindow.setIconPath(iconPath);
         SystemTrayWindow.setMenuInfos(menuInfos);
         trayIcon.addMouseListener(new TrayWindowStarter(SystemTrayWindow.class));
-        menus.forEach(m->{
+        autoStart();
+    }
+
+    public static void autoStart(){
+        menuItemStarters.forEach(m->{
             if(m.getTag() instanceof CliExecutableContext context){
                 if(context.getStartupItem().getAutoStart()){
                     context.start();
                 }
             }
         });
+    }
 
+    public static void stopAllRunningCliProcess(){
+        menuItemStarters.forEach(m->{
+            if(m.getTag() instanceof CliExecutableContext context){
+                context.stop();
+            }
+        });
     }
 
     private static void editConfigFile() {
-        if(!path.toFile().exists()){
+        if(!DEFAULT_CONF_PATH.toFile().exists()){
             try {
-                FileUtils.forceMkdirParent(path.toFile());
-                path.toFile().createNewFile();
+                FileUtils.forceMkdirParent(DEFAULT_CONF_PATH.toFile());
+                DEFAULT_CONF_PATH.toFile().createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
         }
         try {
-            Desktop.getDesktop().open(path.toFile());
+            Desktop.getDesktop().open(DEFAULT_CONF_PATH.toFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -172,15 +181,17 @@ public class App {
             throw new RuntimeException(e);
         }
     }
-   public static final Path path=Path.of("conf","app.json");
+
+    public static final Path DEFAULT_CONF_PATH =Path.of("conf","app.json");
+
     private static List<StartupItem> loadStartupItems() throws IOException {
-        if(!path.toFile().exists()){
+        if(!DEFAULT_CONF_PATH.toFile().exists()){
             return Collections.emptyList();
         }
         var gson=new Gson();
-        var json= Files.readString(path, StandardCharsets.UTF_8);
+        var json= Files.readString(DEFAULT_CONF_PATH, StandardCharsets.UTF_8);
         var type=new TypeToken<List<StartupItem>>(){}.getType();
-        if(json.isEmpty() || json.isEmpty()){
+        if(json.isEmpty() || json.isBlank()){
             return Collections.emptyList();
         }
         try {
