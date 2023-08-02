@@ -2,7 +2,7 @@ package cn.vanillazi.tool;
 
 import cn.vanillazi.commons.fx.property.PropertyUtils;
 import cn.vanillazi.commons.fx.util.TipUtils;
-import cn.vanillazi.commons.fx.util.VersionUtils;
+
 import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
 import cn.vanillazi.commons.fx.view.tray.MenuInfo;
 import cn.vanillazi.commons.fx.view.tray.SystemTrayWindow;
@@ -158,8 +158,7 @@ public class App {
     }
 
     private static void showAboutDialog() {
-
-        var ad= VersionUtils.loadAbout();
+        var ad= new AboutDialog.About();
         ad.setAppName(ResourceBundles.appName());
         ad.setCopyright(ResourceBundles.copyright());
         ad.setIconPath(iconPath);
