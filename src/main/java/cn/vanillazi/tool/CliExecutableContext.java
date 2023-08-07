@@ -1,14 +1,16 @@
 package cn.vanillazi.tool;
 
-import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+import java.util.Scanner;
 
 public class CliExecutableContext implements Runnable{
 
-    private static final Logger logger= Logger.getLogger(CliExecutableContext.class.getName());
+    private Logger logger;
 
     private StartupItem startupItem;
     private CommandProcessListener commandProcessListener;
@@ -18,6 +20,7 @@ public class CliExecutableContext implements Runnable{
     public CliExecutableContext(StartupItem startupItem,CommandProcessListener commandProcessListener) {
         this.startupItem = startupItem;
         this.commandProcessListener=commandProcessListener;
+        logger= LoggerFactory.getLogger(CliExecutableContext.class.getName()+"."+startupItem.getName());
     }
 
     public StartupItem getStartupItem() {
@@ -56,20 +59,31 @@ public class CliExecutableContext implements Runnable{
                     .redirectError(ProcessBuilder.Redirect.PIPE)
                     .start();
             commandProcessListener.onStarted();
-            IOUtils.copy(process.getErrorStream(),System.out);
-            IOUtils.copy(process.getInputStream(),System.out);
+            streamToLog(process.getErrorStream(),true);
+            streamToLog(process.getInputStream(),false);
         } catch (IOException e) {
-            e.printStackTrace();
-            logger.severe(e.getMessage());
+            logger.error("",e);
             commandProcessListener.onError("",e);
         }
         try {
             process.waitFor();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            logger.severe(e.getMessage());
+            logger.error("",e);
         }
         thread=null;
         commandProcessListener.onFinished();
     }
+
+    public void streamToLog(InputStream in,boolean error){
+        Scanner scanner=new Scanner(in);
+        while (scanner.hasNext()){
+            var line=scanner.nextLine();
+            if(error) {
+                logger.error(line);
+            }else{
+                logger.info(line);
+            }
+        }
+    }
+
 }
