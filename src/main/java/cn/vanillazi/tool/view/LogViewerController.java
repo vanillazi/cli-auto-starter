@@ -1,7 +1,9 @@
 package cn.vanillazi.tool.view;
 
 import cn.vanillazi.commons.fx.view.BaseDialog;
+import cn.vanillazi.tool.App;
 import cn.vanillazi.tool.CliExecutableContext;
+import cn.vanillazi.tool.config.ResourceBundles;
 import cn.vanillazi.tool.log.LogInitializer;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
@@ -18,16 +20,18 @@ public class LogViewerController extends BaseDialog {
 
     @Override
     public void onInitUI() {
+        stage.setTitle(ResourceBundles.log());
+        stage.getIcons().add(new javafx.scene.image.Image(App.iconPath));
         area.setAutoHeight(true);
         LogInitializer.logDispatcher.register(this);
     }
-
+    public static final String PREFIX=CliExecutableContext.class.getName()+".";
     public static final int prefixIndex=CliExecutableContext.class.getName().length()+1;
 
     @Subscribe
     public void onLog(LogRecord record){
         Platform.runLater(()->{
-            var cliName=record.getLoggerName().substring(prefixIndex);
+            var cliName=record.getLoggerName().replace(PREFIX,"");
             area.append(cliName+":","bold");
             if(record.getLevel().intValue()> Level.WARNING.intValue()) {
                 area.append(record.getMessage() + "\n", "red");
