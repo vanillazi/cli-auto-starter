@@ -26,20 +26,19 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 
 import java.awt.*;
-import java.io.File;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static cn.vanillazi.tool.constant.Constants.*;
+
 public class App {
 
-    public static final File DEFAULT_LOGO_FILE =new File("./asset/logo.png");
-    public static final Path DEFAULT_CONF_PATH =Path.of("conf","app.json");
-    public static final String iconPath="file:"+DEFAULT_LOGO_FILE.getAbsolutePath();
     private static final Logger logger= LoggerFactory.getLogger(App.class.getName());
 
     static {
@@ -134,7 +133,7 @@ public class App {
         menuInfos.add(exit);
         SystemTrayWindow.setSelectedExtraText(ResourceBundles.started());
         SystemTrayWindow.enableMultiSelectMode();
-        SystemTrayWindow.setIconPath(iconPath);
+        SystemTrayWindow.setIconPath(ICON_PATH);
         SystemTrayWindow.setMenuInfos(menuInfos);
         trayIcon.addMouseListener(new TrayWindowStarter(SystemTrayWindow.class));
         autoStart();
@@ -181,7 +180,7 @@ public class App {
         var about= new AboutDialog.About();
         about.setAppName(ResourceBundles.appName());
         about.setCopyright(ResourceBundles.copyright());
-        about.setIconPath(iconPath);
+        about.setIconPath(ICON_PATH);
         AboutDialog.newInstance(about).show(null);
     }
 
