@@ -19,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,7 +159,10 @@ public class App {
     private static void editConfigFile() {
         if(!DEFAULT_CONF_PATH.toFile().exists()){
             try {
-                FileUtils.forceMkdirParent(DEFAULT_CONF_PATH.toFile());
+                var parentFile=DEFAULT_CONF_PATH.toFile().getParentFile();
+                if(!parentFile.exists()){
+                    parentFile.mkdirs();
+                }
                 DEFAULT_CONF_PATH.toFile().createNewFile();
             } catch (IOException e) {
                 logger.error(ResourceBundles.failedToCreateConfigurationFile(),e);

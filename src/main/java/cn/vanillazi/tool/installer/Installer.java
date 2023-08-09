@@ -22,10 +22,10 @@ public class Installer implements ExecUtils.RunOnAdmin {
 
     @Override
     public void runOnAdmin(String[] args) {
-        var f=new File("");
-        var exePath=f.getAbsolutePath()+File.separator+ Constants.APP_ID+".exe";
+        var currentDirectory=new File("").getAbsolutePath();
+        var exePath=currentDirectory+File.separator+ Constants.APP_ID+".exe";
         try {
-            DesktopShortcutCreator.createDesktopIcon(f.getAbsolutePath(),exePath);
+            DesktopShortcutCreator.createDesktopIcon(currentDirectory,exePath);
         } catch (IOException e) {
             logger.error(ResourceBundles.failedToCreateDesktopShortcut(),e);
             throw new RuntimeException(e);
