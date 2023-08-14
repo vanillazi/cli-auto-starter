@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import org.fxmisc.richtext.StyleClassedTextArea?>
-<?import javafx.geometry.Insets?>
+
 <BorderPane
             stylesheets="@css/common.css"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="cn.vanillazi.tool.view.LogViewerController" prefWidth="800.0" prefHeight="600.0">
 <center>
-    <StyleClassedTextArea fx:id="area" ></StyleClassedTextArea>
+    <StyleClassedTextArea fx:id="area" />
 </center>
 </BorderPane>

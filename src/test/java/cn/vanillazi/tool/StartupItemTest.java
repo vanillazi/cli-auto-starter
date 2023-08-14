@@ -10,7 +10,7 @@ class StartupItemTest {
 
     public static void main(String[] args) {
         var si=new StartupItem();
-        si.setArgs(Arrays.asList("test"));
+        si.setArgs(Arrays.asList("test","123"));
         si.setName("test");
         si.setExecutable("a:/test.exe");
         si.setDescription("just for test");

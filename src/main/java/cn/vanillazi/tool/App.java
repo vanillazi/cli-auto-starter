@@ -2,20 +2,18 @@ package cn.vanillazi.tool;
 
 import cn.vanillazi.commons.fx.property.PropertyUtils;
 
-import cn.vanillazi.commons.fx.util.TipUtils;
-
 import cn.vanillazi.commons.fx.view.ViewUtils;
 import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
 import cn.vanillazi.commons.fx.view.tray.MenuInfo;
 import cn.vanillazi.commons.fx.view.tray.SystemTrayWindow;
 import cn.vanillazi.commons.fx.view.tray.TrayWindowStarter;
 
+import cn.vanillazi.tool.config.AppConfigs;
 import cn.vanillazi.tool.config.ResourceBundles;
 
 import cn.vanillazi.tool.log.LogInitializer;
+import cn.vanillazi.tool.view.ConfigViewerController;
 import cn.vanillazi.tool.view.LogViewerController;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
 
@@ -157,25 +155,7 @@ public class App {
     }
 
     private static void editConfigFile() {
-        if(!DEFAULT_CONF_PATH.toFile().exists()){
-            try {
-                var parentFile=DEFAULT_CONF_PATH.toFile().getParentFile();
-                if(!parentFile.exists()){
-                    parentFile.mkdirs();
-                }
-                DEFAULT_CONF_PATH.toFile().createNewFile();
-            } catch (IOException e) {
-                logger.error(ResourceBundles.failedToCreateConfigurationFile(),e);
-                throw new RuntimeException(e);
-            }
-
-        }
-        try {
-            Desktop.getDesktop().open(DEFAULT_CONF_PATH.toFile());
-        } catch (IOException e) {
-            logger.error(ResourceBundles.failedToEditConfigurationFile(),e);
-            throw new RuntimeException(e);
-        }
+        ViewUtils.loadView(ConfigViewerController.class,null,ResourceBundles.getResourceBundle()).show();
     }
 
     private static void showAboutDialog() {
@@ -199,18 +179,9 @@ public class App {
         if(!DEFAULT_CONF_PATH.toFile().exists()){
             return Collections.emptyList();
         }
-        var gson=new Gson();
         var json= Files.readString(DEFAULT_CONF_PATH, StandardCharsets.UTF_8);
-        var type=new TypeToken<List<StartupItem>>(){}.getType();
-        if(json.isEmpty() || json.isBlank()){
-            return Collections.emptyList();
-        }
-        try {
-            return gson.fromJson(json, type);
-        }catch (Throwable e){
-            logger.error(ResourceBundles.failedToParseConfigurationFile(),e);
-            TipUtils.error(e.getMessage());
-        }
-        return Collections.emptyList();
+        return AppConfigs.parseFromJson(json);
     }
+
+
 }

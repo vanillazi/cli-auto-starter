@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import org.fxmisc.richtext.StyleClassedTextArea?>
+
+<BorderPane
+            stylesheets="@css/common.css"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="cn.vanillazi.tool.view.ConfigViewerController" prefWidth="800.0" prefHeight="600.0">
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="%file">
+                    <items>
+                        <MenuItem text="%save" fx:id="save"/>
+                        <MenuItem text="%insert" fx:id="insert"/>
+                        <MenuItem text="%format" fx:id="format"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+<center>
+    <StyleClassedTextArea fx:id="area" />
+</center>
+</BorderPane>
