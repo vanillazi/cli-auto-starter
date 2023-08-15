@@ -6,7 +6,7 @@
 
     <groupId>cn.vanillazi.tool</groupId>
     <artifactId>cli-auto-starter</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -164,6 +164,7 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
+                                    <targetJreVersion>17</targetJreVersion>
                                     <withJre>false</withJre>
                                     <outputZip>true</outputZip>
                                     <customRuntimeImage>true</customRuntimeImage>
@@ -208,6 +209,7 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
+                                    <targetJreVersion>17</targetJreVersion>
                                     <withJre>true</withJre>
                                     <outputZip>true</outputZip>
                                     <customRuntimeImage>true</customRuntimeImage>
