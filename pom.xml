@@ -19,6 +19,24 @@
             <groupId>org.fxmisc.richtext</groupId>
             <artifactId>richtextfx</artifactId>
             <version>0.11.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-base</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-fxml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-controls</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -128,7 +146,7 @@
     </build>
     <profiles>
         <profile>
-            <id>dist</id>
+            <id>distWin</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
             </properties>
@@ -158,6 +176,46 @@
                                         <resource>
                                             <from>${project.basedir}/tools</from>
                                             <into>.</into>
+                                        </resource>
+                                        <resource>
+                                            <from>${project.basedir}/asset/logo.ico</from>
+                                            <into>./${project.name}.ico</into>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>distLinux</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>cn.vanillazi.tool</groupId>
+                        <artifactId>service-maven-plugin</artifactId>
+                        <version>0.0.2-SNAPSHOT</version>
+                        <executions>
+                            <execution>
+                                <id>service-package</id>
+                                <goals>
+                                    <goal>service-package</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <withJre>true</withJre>
+                                    <outputZip>true</outputZip>
+                                    <customRuntimeImage>true</customRuntimeImage>
+                                    <scriptConfigFile>${project.basedir}/build-config/build.properties</scriptConfigFile>
+                                    <resources>
+                                        <resource>
+                                            <from>${project.basedir}/asset</from>
+                                            <into>asset</into>
                                         </resource>
                                         <resource>
                                             <from>${project.basedir}/asset/logo.ico</from>
