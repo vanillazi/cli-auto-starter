@@ -3,8 +3,8 @@ package cn.vanillazi.tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -31,7 +31,7 @@ public class CliExecutableContext implements Runnable{
         if(thread!=null){
             return;
         }
-        thread=new Thread(this);
+        thread=new Thread(this,startupItem.getName());
         thread.start();
     }
 
@@ -75,15 +75,22 @@ public class CliExecutableContext implements Runnable{
     }
 
     public void streamToLog(InputStream in,boolean error){
-        Scanner scanner=new Scanner(in);
-        while (scanner.hasNext()){
-            var line=scanner.nextLine();
-            if(error) {
-                logger.error(line);
-            }else{
-                logger.info(line);
+            try(var lineReader=new BufferedReader(new InputStreamReader(in))){
+                var line=lineReader.readLine();
+                while (line!=null){
+                    if(error) {
+                        logger.error(line);
+                    }else{
+                        logger.info(line);
+                    }
+                    line=lineReader.readLine();
+                };
+            }catch (IOException e){
+
             }
-        }
+
+
+
     }
 
 }
