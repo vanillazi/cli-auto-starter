@@ -7,6 +7,7 @@ import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
 import cn.vanillazi.commons.fx.view.tray.MenuInfo;
 import cn.vanillazi.commons.fx.view.tray.SystemTrayWindow;
 
+import cn.vanillazi.commons.fx.view.tray.TrayWindowStarter;
 import cn.vanillazi.tool.config.AppConfigs;
 import cn.vanillazi.tool.config.ResourceBundles;
 
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.SysexMessage;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -101,18 +103,12 @@ public class App {
     }
 
     private static List<MenuInfo> menuItemStarters;
-    private static void onInitUI() throws IOException {
-        SystemTray.FORCE_TRAY_TYPE= SystemTray.TrayType.AppIndicator;
-        var tray= SystemTray.get();
-        if(tray==null){
-            logger.error(ResourceBundles.theSystemTrayIsNotSupported());
-            return;
-        }
+    private static void onInitUI() throws IOException, AWTException {
+
+
         Platform.setImplicitExit(false);
 
-        Image image=loadTrayIcon();
-        tray.setImage(image);
-        tray.setStatus(ResourceBundles.appName());
+
 
         var menuInfos=new ArrayList<MenuInfo>();
 
@@ -151,8 +147,40 @@ public class App {
         SystemTrayWindow.enableMultiSelectMode();
         SystemTrayWindow.setIconPath(ICON_PATH);
         SystemTrayWindow.setMenuInfos(menuInfos);
-        initMenus(tray,menuInfos);
+
+        if(com.sun.jna.Platform.isWindows()){
+            initWindows(menuInfos);
+        }else{
+            initNoWindows(menuInfos);
+        }
         autoStart();
+    }
+
+    private static void initWindows(ArrayList<MenuInfo> menuInfos) throws AWTException {
+        if(!java.awt.SystemTray.isSupported()){
+            logger.error(ResourceBundles.theSystemTrayIsNotSupported());
+            System.exit(0);
+        }
+        var tray=java.awt.SystemTray.getSystemTray();
+        Image image=loadTrayIcon();
+        var trayIcon=new TrayIcon(image);
+        trayIcon.setImageAutoSize(true);
+        trayIcon.setToolTip(ResourceBundles.appName());
+        tray.add(trayIcon);
+        trayIcon.addMouseListener(new TrayWindowStarter(SystemTrayWindow.class));
+        TrayWindowStarter.setIsFirstLaunch(false);
+    }
+
+    private static void initNoWindows(ArrayList<MenuInfo> menuInfos) {
+        var tray= SystemTray.get();
+        if(tray==null){
+            logger.error(ResourceBundles.theSystemTrayIsNotSupported());
+            System.exit(0);
+        }
+        Image image=loadTrayIcon();
+        tray.setImage(image);
+        tray.setStatus(ResourceBundles.appName());
+        initMenus(tray,menuInfos);
     }
 
     private static void initMenus(SystemTray tray, ArrayList<MenuInfo> menuInfos) {
