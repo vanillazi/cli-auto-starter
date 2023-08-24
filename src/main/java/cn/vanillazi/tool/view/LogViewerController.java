@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import org.fxmisc.richtext.StyleClassedTextArea;
 
 import java.util.concurrent.Flow;
@@ -37,6 +38,7 @@ public class LogViewerController extends BaseDialog implements Flow.Subscriber<L
         App.getMenuItemStarters().forEach(starter->{
             clis.add(starter.getName());
         });
+        lvCli.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lvCli.setItems(clis);
     }
     public static final String PREFIX=CliExecutableContext.class.getName()+".";
@@ -46,7 +48,7 @@ public class LogViewerController extends BaseDialog implements Flow.Subscriber<L
         var loggerName=record.getLoggerName();
         if(items.isEmpty() || items.contains(ResourceBundles.all()) || items.contains(loggerName)){
             Platform.runLater(()->{
-                var cliName=record.getLoggerName().replace(PREFIX,"");
+                var cliName=loggerName;
                 area.append(cliName+":","bold");
                 if(record.getLevel().intValue()> Level.WARNING.intValue()) {
                     area.append(record.getMessage() + "\n", "red");
