@@ -1,11 +1,15 @@
 package cn.vanillazi.tool.view;
 
 import cn.vanillazi.commons.fx.view.BaseDialog;
+import cn.vanillazi.tool.App;
 import cn.vanillazi.tool.CliExecutableContext;
 import cn.vanillazi.tool.config.ResourceBundles;
 import cn.vanillazi.tool.log.LogInitializer;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import org.fxmisc.richtext.StyleClassedTextArea;
 
 import java.util.concurrent.Flow;
@@ -18,6 +22,10 @@ public class LogViewerController extends BaseDialog implements Flow.Subscriber<L
 
     @FXML
     protected StyleClassedTextArea area;
+    @FXML
+    protected ListView<String> lvCli;
+
+    private ObservableList<String> clis=FXCollections.observableArrayList();
 
     @Override
     public void onInitUI() {
@@ -25,19 +33,29 @@ public class LogViewerController extends BaseDialog implements Flow.Subscriber<L
         stage.getIcons().add(new javafx.scene.image.Image(ICON_PATH));
         area.prefWidthProperty().bind(stage.getScene().widthProperty());
         LogInitializer.publisher.subscribe(this);
+        clis.add(ResourceBundles.all());
+        App.getMenuItemStarters().forEach(starter->{
+            clis.add(starter.getName());
+        });
+        lvCli.setItems(clis);
     }
     public static final String PREFIX=CliExecutableContext.class.getName()+".";
 
     public void onLog(LogRecord record){
-        Platform.runLater(()->{
-            var cliName=record.getLoggerName().replace(PREFIX,"");
-            area.append(cliName+":","bold");
-            if(record.getLevel().intValue()> Level.WARNING.intValue()) {
-                area.append(record.getMessage() + "\n", "red");
-            }else{
-                area.append(record.getMessage() + "\n", "");
-            }
-        });
+        var items=lvCli.getSelectionModel().getSelectedItems();
+        var loggerName=record.getLoggerName();
+        if(items.isEmpty() || items.contains(ResourceBundles.all()) || items.contains(loggerName)){
+            Platform.runLater(()->{
+                var cliName=record.getLoggerName().replace(PREFIX,"");
+                area.append(cliName+":","bold");
+                if(record.getLevel().intValue()> Level.WARNING.intValue()) {
+                    area.append(record.getMessage() + "\n", "red");
+                }else{
+                    area.append(record.getMessage() + "\n", "");
+                }
+            });
+        }
+
     }
 
     @Override

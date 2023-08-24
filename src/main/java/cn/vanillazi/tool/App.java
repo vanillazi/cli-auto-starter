@@ -103,12 +103,14 @@ public class App {
     }
 
     private static List<MenuInfo> menuItemStarters;
+
+    public static List<MenuInfo> getMenuItemStarters() {
+        return menuItemStarters;
+    }
+
     private static void onInitUI() throws IOException, AWTException {
 
-
         Platform.setImplicitExit(false);
-
-
 
         var menuInfos=new ArrayList<MenuInfo>();
 

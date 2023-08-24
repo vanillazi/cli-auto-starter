@@ -4,9 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class CliExecutableContext implements Runnable{
 
@@ -20,7 +19,7 @@ public class CliExecutableContext implements Runnable{
     public CliExecutableContext(StartupItem startupItem,CommandProcessListener commandProcessListener) {
         this.startupItem = startupItem;
         this.commandProcessListener=commandProcessListener;
-        logger= LoggerFactory.getLogger(CliExecutableContext.class.getName()+"."+startupItem.getName());
+        logger= LoggerFactory.getLogger(startupItem.getName());
     }
 
     public StartupItem getStartupItem() {
@@ -88,9 +87,6 @@ public class CliExecutableContext implements Runnable{
             }catch (IOException e){
 
             }
-
-
-
     }
 
 }
