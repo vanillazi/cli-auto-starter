@@ -30,17 +30,27 @@ public class Installer implements ExecUtils.RunOnAdmin {
 
     public static final String LINUX_USER_DESKTOP_DIR=System.getProperty("user.home")+ File.separator+".local/share/applications";
     public static final String LINUX_USER_DESKTOP_FILE_PATH=LINUX_USER_DESKTOP_DIR+"/"+Constants.APP_ID+".desktop";
+    public static final String LINUX_USER_AUTO_START_DESKTOP_FILE_PATH=System.getProperty("user.home")+"/.config/autostart/"+Constants.APP_ID+".desktop";
     protected static void createLinuxDesktopFile() {
         var file=new File(LINUX_USER_DESKTOP_DIR);
         if(file.exists()){
             file.mkdirs();
         }
         var desktopFile=new File(LINUX_USER_DESKTOP_FILE_PATH);
+        var content=createLinuxDesktop();
         if(!desktopFile.exists()){
             try {
                 desktopFile.createNewFile();
-                var content=createLinuxDesktop();
                 Files.writeString(desktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        var autoStartDesktopFile=new File(LINUX_USER_AUTO_START_DESKTOP_FILE_PATH);
+        if(!autoStartDesktopFile.exists()){
+            try {
+                autoStartDesktopFile.createNewFile();
+                Files.writeString(autoStartDesktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -31,5 +31,3 @@ cd ${安装目录}
 cd ${安装目录}
 ./run.cn.vanillazi.tool.installer.Uninstaller.sh
 ```
-## 注意
-1. Ubuntu下主程序不支持自启动。

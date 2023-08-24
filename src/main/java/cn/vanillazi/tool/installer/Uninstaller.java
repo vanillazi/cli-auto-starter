@@ -23,6 +23,10 @@ public class Uninstaller implements ExecUtils.RunOnAdmin {
         if(df.exists()){
             df.delete();
         }
+        df=new File(Installer.LINUX_USER_AUTO_START_DESKTOP_FILE_PATH);
+        if(df.exists()){
+            df.delete();
+        }
     }
     @Override
     public void runOnAdmin(String[] args) {
