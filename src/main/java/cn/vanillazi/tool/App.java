@@ -20,18 +20,13 @@ import dorkbox.systemTray.SystemTray;
 import javafx.application.Application;
 import javafx.application.Platform;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import javax.sound.midi.SysexMessage;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -67,17 +62,17 @@ public class App {
         var context=new CliExecutableContext(startupItem, new CommandProcessListener() {
             @Override
             public void onStarted() {
-                tryRunOnFxThread(() -> mi.setDisplayName(mi.getName() + ResourceBundles.started()));
+                Platform.runLater(()->mi.setDisplayName(mi.getName() + ResourceBundles.started()));
             }
 
             @Override
             public void onFinished() {
-                tryRunOnFxThread(() -> mi.setDisplayName(mi.getName()));
+                Platform.runLater(()->mi.setDisplayName(mi.getName()));
             }
 
             @Override
             public void onError(String msg, Throwable cause) {
-                tryRunOnFxThread(() ->mi.setDisplayName(mi.getName()));
+                Platform.runLater(()->mi.setDisplayName(mi.getName()));
             }
         });
         mi.setName(startupItem.getName());
@@ -94,14 +89,6 @@ public class App {
         return mi;
     }
 
-    public static void tryRunOnFxThread(Runnable runnable){
-        try {
-            Platform.runLater(runnable);
-        }catch (Throwable e){
-            runnable.run();
-        }
-    }
-
     private static List<MenuInfo> menuItemStarters;
 
     public static List<MenuInfo> getMenuItemStarters() {
@@ -112,15 +99,17 @@ public class App {
 
         Platform.setImplicitExit(false);
 
-        var menuInfos=new ArrayList<MenuInfo>();
+        var trayMenuInfos=new ArrayList<MenuInfo>();
 
         var startupItems=loadStartupItems();
         menuItemStarters=startupItems.stream().map(App::toMenuInfo).toList();
-        menuInfos.addAll(menuItemStarters);
+        trayMenuInfos.addAll(menuItemStarters);
+
         var config= PropertyUtils.createPropertyClass(MenuInfo.class);
         config.setName(ResourceBundles.config());
         config.setDisplayName(ResourceBundles.config());
         config.setEventHandler(e->editConfigFile());
+
         var about= PropertyUtils.createPropertyClass(MenuInfo.class);
         about.setName(ResourceBundles.about());
         about.setDisplayName(ResourceBundles.about());
@@ -130,35 +119,29 @@ public class App {
         exit.setName(ResourceBundles.exit());
         exit.setDisplayName(ResourceBundles.exit());
         exit.setEventHandler(e->{
-                    stopAllRunningCliProcess();
-                    System.exit(0);
-                });
+            stopAllRunningCliProcess();
+            System.exit(0);
+        });
 
         var log=PropertyUtils.createPropertyClass(MenuInfo.class);
         log.setName(ResourceBundles.log());
         log.setDisplayName(ResourceBundles.log());
-        log.setEventHandler(e->{
-            ViewUtils.loadView(LogViewerController.class).show();
-        });
+        log.setEventHandler(e->ViewUtils.loadView(LogViewerController.class).show());
 
-        menuInfos.add(config);
-        menuInfos.add(log);
-        menuInfos.add(about);
-        menuInfos.add(exit);
-        SystemTrayWindow.setSelectedExtraText(ResourceBundles.started());
-        SystemTrayWindow.enableMultiSelectMode();
-        SystemTrayWindow.setIconPath(ICON_PATH);
-        SystemTrayWindow.setMenuInfos(menuInfos);
+        trayMenuInfos.add(config);
+        trayMenuInfos.add(log);
+        trayMenuInfos.add(about);
+        trayMenuInfos.add(exit);
 
         if(com.sun.jna.Platform.isWindows()){
-            initWindows(menuInfos);
+            initWindowsTray(trayMenuInfos);
         }else{
-            initNoWindows(menuInfos);
+            initNoWindowsTray(trayMenuInfos);
         }
         autoStart();
     }
 
-    private static void initWindows(ArrayList<MenuInfo> menuInfos) throws AWTException {
+    private static void initWindowsTray(ArrayList<MenuInfo> menuInfos) throws AWTException {
         if(!java.awt.SystemTray.isSupported()){
             logger.error(ResourceBundles.theSystemTrayIsNotSupported());
             System.exit(0);
@@ -169,11 +152,15 @@ public class App {
         trayIcon.setImageAutoSize(true);
         trayIcon.setToolTip(ResourceBundles.appName());
         tray.add(trayIcon);
+        SystemTrayWindow.setSelectedExtraText(ResourceBundles.started());
+        SystemTrayWindow.enableMultiSelectMode();
+        SystemTrayWindow.setIconPath(ICON_PATH);
+        SystemTrayWindow.setMenuInfos(menuInfos);
         trayIcon.addMouseListener(new TrayWindowStarter(SystemTrayWindow.class));
         TrayWindowStarter.setIsFirstLaunch(false);
     }
 
-    private static void initNoWindows(ArrayList<MenuInfo> menuInfos) {
+    private static void initNoWindowsTray(ArrayList<MenuInfo> menuInfos) {
         var tray= SystemTray.get();
         if(tray==null){
             logger.error(ResourceBundles.theSystemTrayIsNotSupported());
@@ -182,26 +169,15 @@ public class App {
         Image image=loadTrayIcon();
         tray.setImage(image);
         tray.setStatus(ResourceBundles.appName());
-        initMenus(tray,menuInfos);
+        initNoWindowsTrayMenus(tray,menuInfos);
     }
 
-    private static void initMenus(SystemTray tray, ArrayList<MenuInfo> menuInfos) {
+    private static void initNoWindowsTrayMenus(SystemTray tray, ArrayList<MenuInfo> menuInfos) {
         menuInfos.forEach(m->{
-            var mi=new MenuItem(m.getName(), new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    tryRunOnFxThread(()->{
-                        m.getEventHandler().handle(null);
-                    });
-                }
-            });
+            var mi=new MenuItem(m.getName(), e -> Platform.runLater(()->m.getEventHandler().handle(null)));
             tray.getMenu().add(mi);
-            PropertyUtils.getProperty(m,MenuInfo::getDisplayName).addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    mi.setText(newValue);
-                }
-            });
+            PropertyUtils.getProperty(m,MenuInfo::getDisplayName)
+                    .addListener((observable, oldValue, newValue) -> mi.setText(newValue));
         });
 
     }
@@ -252,6 +228,4 @@ public class App {
         var json= Files.readString(DEFAULT_CONF_PATH, StandardCharsets.UTF_8);
         return AppConfigs.parseFromJson(json);
     }
-
-
 }
