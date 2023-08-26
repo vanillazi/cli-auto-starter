@@ -36,7 +36,9 @@ public class CliExecutableContext implements Runnable{
 
     public void stop(){
         if(thread!=null) {
-            process.destroyForcibly();
+            if(process!=null) {
+                process.destroyForcibly();
+            }
             thread.interrupt();
             thread = null;
         }
