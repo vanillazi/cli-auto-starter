@@ -20,6 +20,7 @@ public class AppConfigs {
         si.setName(ResourceBundles.newItemName());
         si.setExecutable(ResourceBundles.newItemExecutable());
         si.setDescription(ResourceBundles.newItemDescription());
+        si.setWorkDirectory(ResourceBundles.newItemWorkDirectory());
         si.setAutoStart(false);
         return si;
     }

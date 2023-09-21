@@ -54,11 +54,14 @@ public class CliExecutableContext implements Runnable{
             var cmd=new ArrayList<String>();
             cmd.add(startupItem.getExecutable());
             cmd.addAll(startupItem.getArgs());
-            process=new ProcessBuilder()
+            var processBuilder=new ProcessBuilder()
                     .command(cmd)
                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                    .redirectError(ProcessBuilder.Redirect.PIPE)
-                    .start();
+                    .redirectError(ProcessBuilder.Redirect.PIPE);
+            if(startupItem.getWorkDirectory()!=null){
+                processBuilder.directory(new File(startupItem.getWorkDirectory()));
+            }
+            var process=processBuilder.start();
             commandProcessListener.onStarted();
             streamToLog(process.getErrorStream(),true);
             streamToLog(process.getInputStream(),false);
