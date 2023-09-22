@@ -56,6 +56,11 @@
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>cn.vanillazi.commons</groupId>
+            <artifactId>commons-tray</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
@@ -69,11 +74,6 @@
             <groupId>cn.vanillazi.commons</groupId>
             <artifactId>commons-win32</artifactId>
             <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dorkbox</groupId>
-            <artifactId>SystemTray</artifactId>
-            <version>4.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

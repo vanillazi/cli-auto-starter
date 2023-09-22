@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.ArrayList;
 
-
-public class CliExecutableContext implements Runnable{
+public class ProcessContext implements Runnable{
 
     private Logger logger;
 
@@ -15,8 +14,13 @@ public class CliExecutableContext implements Runnable{
     private CommandProcessListener commandProcessListener;
 
     private volatile Thread thread;
+
+    private volatile Thread readThread;
+
+    private volatile  Thread readErrorThread;
+
     private Process process;
-    public CliExecutableContext(StartupItem startupItem,CommandProcessListener commandProcessListener) {
+    public ProcessContext(StartupItem startupItem, CommandProcessListener commandProcessListener) {
         this.startupItem = startupItem;
         this.commandProcessListener=commandProcessListener;
         logger= LoggerFactory.getLogger(startupItem.getName());
@@ -38,9 +42,18 @@ public class CliExecutableContext implements Runnable{
         if(thread!=null) {
             if(process!=null) {
                 process.destroyForcibly();
+                process=null;
             }
             thread.interrupt();
             thread = null;
+            if(readErrorThread!=null && readErrorThread.isAlive()){
+                readErrorThread.interrupt();
+            }
+            readErrorThread=null;
+            if(readThread!=null && readThread.isAlive()){
+                readThread.interrupt();
+            }
+            readThread=null;
         }
     }
 
@@ -61,18 +74,25 @@ public class CliExecutableContext implements Runnable{
             if(startupItem.getWorkDirectory()!=null){
                 processBuilder.directory(new File(startupItem.getWorkDirectory()));
             }
-            var process=processBuilder.start();
+            process=processBuilder.start();
             commandProcessListener.onStarted();
-            streamToLog(process.getErrorStream(),true);
-            streamToLog(process.getInputStream(),false);
-        } catch (IOException e) {
+            readThread=new Thread(()->streamToLog(process.getInputStream(),false));
+            readThread.setDaemon(true);
+            readThread.start();
+
+            readErrorThread=new Thread(()->streamToLog(process.getErrorStream(),true));
+            readErrorThread.setDaemon(true);
+            readErrorThread.start();
+        } catch (Throwable e) {
             logger.error("",e);
             commandProcessListener.onError("",e);
         }
-        try {
-            process.waitFor();
-        } catch (InterruptedException e) {
-            logger.error("",e);
+        if(process!=null) {
+            try {
+                process.waitFor();
+            } catch (InterruptedException e) {
+                logger.error("", e);
+            }
         }
         thread=null;
         commandProcessListener.onFinished();

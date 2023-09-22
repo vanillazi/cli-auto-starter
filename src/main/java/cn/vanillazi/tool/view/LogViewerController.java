@@ -2,7 +2,7 @@ package cn.vanillazi.tool.view;
 
 import cn.vanillazi.commons.fx.view.BaseDialog;
 import cn.vanillazi.tool.App;
-import cn.vanillazi.tool.CliExecutableContext;
+import cn.vanillazi.tool.ProcessContext;
 import cn.vanillazi.tool.config.ResourceBundles;
 import cn.vanillazi.tool.log.LogInitializer;
 import javafx.application.Platform;
@@ -41,7 +41,7 @@ public class LogViewerController extends BaseDialog implements Flow.Subscriber<L
         lvCli.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lvCli.setItems(clis);
     }
-    public static final String PREFIX=CliExecutableContext.class.getName()+".";
+    public static final String PREFIX= ProcessContext.class.getName()+".";
 
     public void onLog(LogRecord record){
         var items=lvCli.getSelectionModel().getSelectedItems();
