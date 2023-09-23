@@ -31,3 +31,6 @@ cd ${安装目录}
 cd ${安装目录}
 ./run.cn.vanillazi.tool.installer.Uninstaller.sh
 ```
+
+## 参考
+1. [JReleaser Github Reference](https://jreleaser.org/guide/latest/reference/release/github.html)

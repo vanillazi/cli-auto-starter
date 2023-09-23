@@ -306,6 +306,8 @@
                                         <owner>vanillazi</owner>
                                         <overwrite>true</overwrite>
                                         <tagName>${project.version}</tagName>
+                                        <previousTagName>0.0.5</previousTagName>
+                                        <releaseName>Release ${project.version} ${os.name} ${os.arch}</releaseName>
                                     </github>
                                 </release>
                                 <distributions>
@@ -326,6 +328,9 @@
                                         </artifact>
                                     </app.withJre>
                                 </distributions>
+                                <checksum>
+                                    <individual>true</individual>
+                                </checksum>
                             </jreleaser>
                         </configuration>
                     </plugin>
