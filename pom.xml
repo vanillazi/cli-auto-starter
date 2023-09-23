@@ -6,7 +6,7 @@
 
     <groupId>cn.vanillazi.tool</groupId>
     <artifactId>cli-auto-starter</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <properties>
         <javafx.version>21</javafx.version>
@@ -16,6 +16,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>2.0.9</slf4j.version>
     </properties>
+    <licenses>
+        <license>
+            <name>Wanazi</name>
+            <url>wanazi.cn</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>vanillazi</name>
+            <email>vanillazi@wanazi.cn</email>
+        </developer>
+    </developers>
+    <url>wanazi.cn</url>
+    <description>A tool to auto start CLI program</description>
+
     <dependencies>
         <dependency>
             <groupId>org.fxmisc.richtext</groupId>
@@ -160,6 +175,30 @@
     </build>
     <profiles>
         <profile>
+            <id>configInWindows</id>
+            <activation>
+                <os>
+                    <name>Windows</name>
+                </os>
+            </activation>
+            <properties>
+                <target.os.name>windows</target.os.name>
+                <dist.file.extension>zip</dist.file.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>configInLinux</id>
+            <activation>
+                <os>
+                    <name>Linux</name>
+                </os>
+            </activation>
+            <properties>
+                <target.os.name>linux</target.os.name>
+                <dist.file.extension>tar.gz</dist.file.extension>
+            </properties>
+        </profile>
+        <profile>
             <id>distWin</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
@@ -241,6 +280,54 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jreleaser</groupId>
+                        <artifactId>jreleaser-maven-plugin</artifactId>
+                        <version>1.8.0</version>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <jreleaser>
+                                <project>
+                                    <java>
+                                        <mainClass>cn.vanillazi.tool.App</mainClass>
+                                    </java>
+                                    <copyright>CopyrightÂ© 2023 Wanazi. All Rights Reserved.</copyright>
+                                </project>
+                                <release>
+                                    <github>
+                                        <owner>vanillazi</owner>
+                                        <overwrite>true</overwrite>
+                                        <tagName>${project.version}</tagName>
+                                    </github>
+                                </release>
+                                <distributions>
+                                    <app>
+                                        <artifacts>
+                                            <artifact>
+                                                <path>
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}-${target.os.name}-${os.arch}.${dist.file.extension}
+                                                </path>
+                                            </artifact>
+                                        </artifacts>
+                                    </app>
+                                    <app.withJre>
+                                        <artifact>
+                                            <path>
+                                                ${project.build.directory}/${project.artifactId}-${project.version}-${target.os.name}-${os.arch}.jre.${dist.file.extension}
+                                            </path>
+                                        </artifact>
+                                    </app.withJre>
+                                </distributions>
+                            </jreleaser>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

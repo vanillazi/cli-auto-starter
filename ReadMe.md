@@ -3,11 +3,11 @@ Windows,Ubuntu下命令行程序自启动托盘程序
 ## 构建
 ### Windows
 ```powershell
-mvn package -PdistWin
+mvn package -PdistWin -DwithJre=true
 ```
 ### Ubuntu
 ```shell
-mvn package -PdistLinux
+mvn package -PdistLinux -DwithJre=true
 ```
 ## 安装
 ### Windows
