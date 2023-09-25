@@ -21,7 +21,7 @@ public class AppConfigs {
         si.setExecutable(ResourceBundles.newItemExecutable());
         si.setDescription(ResourceBundles.newItemDescription());
         si.setWorkDirectory(ResourceBundles.newItemWorkDirectory());
-        si.setAutoStart(false);
+        si.setAutoStart(true);
         return si;
     }
 

@@ -66,7 +66,9 @@ public class ProcessContext implements Runnable{
         try {
             var cmd=new ArrayList<String>();
             cmd.add(startupItem.getExecutable());
-            cmd.addAll(startupItem.getArgs());
+            if(startupItem.getArgs()!=null) {
+                cmd.addAll(startupItem.getArgs());
+            }
             var processBuilder=new ProcessBuilder()
                     .command(cmd)
                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
@@ -88,14 +90,12 @@ public class ProcessContext implements Runnable{
             commandProcessListener.onError("",e);
         }
         if(process!=null) {
-            try {
-                process.waitFor();
-            } catch (InterruptedException e) {
-                logger.error("", e);
-            }
+            process.onExit().whenComplete((p,e)->{
+                logger.info("process existed:"+p.exitValue());
+                thread=null;
+                commandProcessListener.onFinished();
+            });
         }
-        thread=null;
-        commandProcessListener.onFinished();
     }
 
     public void streamToLog(InputStream in,boolean error){
@@ -110,7 +110,7 @@ public class ProcessContext implements Runnable{
                     line=lineReader.readLine();
                 };
             }catch (IOException e){
-
+                logger.error("",e);
             }
     }
 
