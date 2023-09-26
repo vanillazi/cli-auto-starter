@@ -28,7 +28,6 @@ public class AppConfigs {
     public static final Gson gson=new GsonBuilder().setPrettyPrinting().create();
 
     public static List<StartupItem> parseFromJson(String json){
-
         var type=new TypeToken<List<StartupItem>>(){}.getType();
         if(json.isEmpty() || json.isBlank()){
             return Collections.emptyList();
