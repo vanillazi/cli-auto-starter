@@ -1,6 +1,8 @@
 package cn.vanillazi.tool;
 
 import com.google.gson.GsonBuilder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -17,5 +19,19 @@ class StartupItemTest {
         si.setAutoStart(false);
         var sis=Arrays.asList(si);
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(sis));
+    }
+
+    @Test
+    public void testModify(){
+        var si=new StartupItem();
+        si.setExecutable("just for test");
+        si.setName("test");
+        System.out.println(si.digest());
+        var si1=new StartupItem();
+        si1.setExecutable("just for test");
+        si1.setName("test");
+        Assertions.assertEquals(si.digest(),si1.digest());
+        si1.setWorkDirectory("/ttt");
+        Assertions.assertNotEquals(si.digest(),si1.digest());
     }
 }

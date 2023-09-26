@@ -119,6 +119,19 @@ public class App {
             System.exit(0);
         });
 
+        var restarter=PropertyUtils.createPropertyClass(MenuInfo.class);
+        restarter.setName(ResourceBundles.restart());
+        restarter.setDisplayName(ResourceBundles.restart());
+        restarter.setEventHandler(e->{
+            stopAllRunningCliProcess();
+            try {
+                ProcessRestarter.restart();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            System.exit(0);
+        });
+
         var log=PropertyUtils.createPropertyClass(MenuInfo.class);
         log.setName(ResourceBundles.log());
         log.setDisplayName(ResourceBundles.log());
@@ -126,6 +139,7 @@ public class App {
 
         trayMenuInfos.add(config);
         trayMenuInfos.add(log);
+        trayMenuInfos.add(restarter);
         trayMenuInfos.add(about);
         trayMenuInfos.add(exit);
         Image image=loadTrayIcon();
@@ -141,10 +155,8 @@ public class App {
 
     public static void autoStart(){
         menuItemStarters.forEach(m->{
-            if(m.getTag() instanceof ProcessContext context){
-                if(context.getStartupItem().getAutoStart()){
-                    context.start();
-                }
+            if(m.getTag() instanceof ProcessContext context && context.getStartupItem().getAutoStart()){
+                context.start();
             }
         });
     }
