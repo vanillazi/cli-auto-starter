@@ -307,7 +307,15 @@
                                         <overwrite>false</overwrite>
                                         <tagName>${project.version}</tagName>
                                         <previousTagName>0.0.6</previousTagName>
-                                        <releaseName>Release ${project.version} ${target.os.name} ${os.arch}</releaseName>
+                                        <releaseName>Release ${project.version}</releaseName>
+                                        <update>
+                                            <enabled>true</enabled>
+                                            <sections>
+                                                <section>ASSETS</section>
+                                                <section>BODY</section>
+                                                <section>TITLE</section>
+                                            </sections>
+                                        </update>
                                     </github>
                                 </release>
                                 <distributions>
