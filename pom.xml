@@ -316,6 +316,74 @@
                                                 <section>TITLE</section>
                                             </sections>
                                         </update>
+                                        <changelog>
+                                            <enabled>true</enabled>
+                                            <sort>DESC</sort>
+                                            <links>false</links>
+                                            <skipMergeCommits>false</skipMergeCommits>
+                                            <formatted>ALWAYS</formatted>
+                                            <preset>gitmoji</preset>
+                                            <format>- {{commitShortHash}} {{commitTitle}}</format>
+                                            <categoryTitleFormat>### {{categoryTitle}}</categoryTitleFormat>
+                                            <contributorsTitleFormat>### Contributors'</contributorsTitleFormat>
+                                            <contributors>
+                                                <enabled>true</enabled>
+                                                <format>- {{contributorName}} ({{contributorUsernameAsLink}})</format>
+                                            </contributors>
+                                            <!--
+                                             Path to a template file that defines the contents.
+                                             Review the available Name Templates.
+                                             Defaults to `src/jreleaser/templates/changelog.tpl`.
+                                             -->
+                                            <contentTemplate>${project.basedir}/src/main/jreleaser/templates/changelog.tpl</contentTemplate>
+                                            <hide>
+                                                <uncategorized>false</uncategorized>
+                                                <categories>
+                                                    <category>merge</category>
+                                                </categories>
+                                                <contributors>
+                                                    <contributor>[bot]</contributor>
+                                                </contributors>
+                                            </hide>
+                                            <labelers>
+                                                <labeler>
+                                                    <label>fix</label>
+                                                    <title>regex:fix:</title>
+                                                    <body>修正</body>
+                                                    <order>1</order>
+                                                </labeler>
+                                                <labeler>
+                                                    <label>feature</label>
+                                                    <title>regex:feature:</title>
+                                                    <body>支持</body>
+                                                    <order>2</order>
+                                                </labeler>
+                                                <labeler>
+                                                    <label>enhancement</label>
+                                                    <title>regex:feat:</title>
+                                                    <body>增加</body>
+                                                    <order>3</order>
+                                                </labeler>
+                                            </labelers>
+                                            <categories>
+                                                <category>
+                                                    <!-- Used for rendering -->
+                                                    <title>🚀 Features</title>
+                                                    <key>features</key>
+                                                    <labels>feature,enhancement</labels>
+                                                    <order>1</order>
+                                                </category>
+                                                <category>
+                                                    <title>🐛 Bug Fixes</title>
+                                                    <key>fixes</key>
+                                                    <labels>bug,fix</labels>
+                                                    <order>2</order>
+                                                </category>
+                                            </categories>
+                                            <extraProperties>
+                                                <categorizeScopes>true</categorizeScopes>
+                                            </extraProperties>
+                                        </changelog>
                                     </github>
                                 </release>
                                 <distributions>
