@@ -330,11 +330,6 @@
                                                 <enabled>true</enabled>
                                                 <format>- {{contributorName}} ({{contributorUsernameAsLink}})</format>
                                             </contributors>
-                                            <!--
-                                             Path to a template file that defines the contents.
-                                             Review the available Name Templates.
-                                             Defaults to `src/jreleaser/templates/changelog.tpl`.
-                                             -->
                                             <contentTemplate>${project.basedir}/src/main/jreleaser/templates/changelog.tpl</contentTemplate>
                                             <hide>
                                                 <uncategorized>false</uncategorized>
@@ -347,7 +342,7 @@
                                             </hide>
                                             <labelers>
                                                 <labeler>
-                                                    <label>fix</label>
+                                                    <label>bug</label>
                                                     <title>regex:fix:</title>
                                                     <body>修正</body>
                                                     <order>1</order>
@@ -361,28 +356,47 @@
                                                 <labeler>
                                                     <label>enhancement</label>
                                                     <title>regex:feat:</title>
-                                                    <body>增加</body>
+                                                    <body>新增</body>
                                                     <order>3</order>
                                                 </labeler>
                                             </labelers>
                                             <categories>
                                                 <category>
-                                                    <!-- Used for rendering -->
-                                                    <title>🚀 Features</title>
+                                                    <title>Features</title>
                                                     <key>features</key>
-                                                    <labels>feature,enhancement</labels>
+                                                    <labels>feature,enhancement,feat</labels>
                                                     <order>1</order>
                                                 </category>
                                                 <category>
-                                                    <title>🐛 Bug Fixes</title>
+                                                    <title>Bug Fixes</title>
                                                     <key>fixes</key>
                                                     <labels>bug,fix</labels>
                                                     <order>2</order>
+                                                </category>
+                                                <category>
+                                                    <title>Changes</title>
+                                                    <key>changes</key>
+                                                    <labels>perf,refactor,revert,style</labels>
+                                                    <order>3</order>
+                                                </category>
+                                                <category>
+                                                    <title>Build</title>
+                                                    <key>build</key>
+                                                    <labels>test,build,ci</labels>
+                                                    <order>4</order>
+                                                </category>
+                                                <category>
+                                                    <title>Documentation</title>
+                                                    <key>docs</key>
+                                                    <labels>docs</labels>
+                                                    <order>5</order>
                                                 </category>
                                             </categories>
                                             <extraProperties>
                                                 <categorizeScopes>true</categorizeScopes>
                                             </extraProperties>
+                                            <preset>conventional-commits</preset>
+                                            <formatted>ALWAYS</formatted>
                                         </changelog>
                                     </github>
                                 </release>
