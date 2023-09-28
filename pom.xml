@@ -178,7 +178,7 @@
             <id>configInWindows</id>
             <activation>
                 <os>
-                    <name>Windows</name>
+                    <family>windows</family>
                 </os>
             </activation>
             <properties>
@@ -304,10 +304,10 @@
                                 <release>
                                     <github>
                                         <owner>vanillazi</owner>
-                                        <overwrite>true</overwrite>
+                                        <overwrite>false</overwrite>
                                         <tagName>${project.version}</tagName>
                                         <previousTagName>0.0.6</previousTagName>
-                                        <releaseName>Release ${project.version} ${os.name} ${os.arch}</releaseName>
+                                        <releaseName>Release ${project.version} ${target.os.name} ${os.arch}</releaseName>
                                     </github>
                                 </release>
                                 <distributions>
