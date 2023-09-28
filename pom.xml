@@ -182,20 +182,20 @@
                 </os>
             </activation>
             <properties>
-                <target.os.name>windows</target.os.name>
-                <dist.file.extension>zip</dist.file.extension>
+                <linux.enabled>NEVER</linux.enabled>
+                <windows.enabled>ALWAYS</windows.enabled>
             </properties>
         </profile>
         <profile>
             <id>configInLinux</id>
             <activation>
                 <os>
-                    <name>Linux</name>
+                    <family>linux</family>
                 </os>
             </activation>
             <properties>
-                <target.os.name>linux</target.os.name>
-                <dist.file.extension>tar.gz</dist.file.extension>
+                <linux.enabled>ALWAYS</linux.enabled>
+                <windows.enabled>NEVER</windows.enabled>
             </properties>
         </profile>
         <profile>
@@ -401,22 +401,46 @@
                                     </github>
                                 </release>
                                 <distributions>
-                                    <app>
+                                    <windows.app>
                                         <artifacts>
                                             <artifact>
+                                                <active>${windows.enabled}</active>
                                                 <path>
-                                                    ${project.build.directory}/${project.artifactId}-${project.version}-${target.os.name}-${os.arch}.${dist.file.extension}
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}-windows-${os.arch}.zip
                                                 </path>
+                                                <platform>windows</platform>
                                             </artifact>
                                         </artifacts>
-                                    </app>
-                                    <app.withJre>
+                                    </windows.app>
+                                    <windows.app.withJre>
                                         <artifact>
+                                            <active>${windows.enabled}</active>
+                                            <platform>windows</platform>
                                             <path>
-                                                ${project.build.directory}/${project.artifactId}-${project.version}-${target.os.name}-${os.arch}.jre.${dist.file.extension}
+                                                ${project.build.directory}/${project.artifactId}-${project.version}-windows-${os.arch}.jre.zip
                                             </path>
                                         </artifact>
-                                    </app.withJre>
+                                    </windows.app.withJre>
+                                    <linux.app>
+                                        <artifacts>
+                                            <artifact>
+                                                <active>${linux.enabled}</active>
+                                                <path>
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}-linux-${os.arch}.tar.gz
+                                                </path>
+                                                <platform>linux</platform>
+                                            </artifact>
+                                        </artifacts>
+                                    </linux.app>
+                                    <linux.app.withJre>
+                                        <artifact>
+                                            <active>${linux.enabled}</active>
+                                            <platform>linux</platform>
+                                            <path>
+                                                ${project.build.directory}/${project.artifactId}-${project.version}-linux-${os.arch}.jre.tar.gz
+                                            </path>
+                                        </artifact>
+                                    </linux.app.withJre>
                                 </distributions>
                                 <checksum>
                                     <individual>true</individual>
