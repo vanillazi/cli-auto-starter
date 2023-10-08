@@ -175,30 +175,6 @@
     </build>
     <profiles>
         <profile>
-            <id>configInWindows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <linux.enabled>NEVER</linux.enabled>
-                <windows.enabled>ALWAYS</windows.enabled>
-            </properties>
-        </profile>
-        <profile>
-            <id>configInLinux</id>
-            <activation>
-                <os>
-                    <family>linux</family>
-                </os>
-            </activation>
-            <properties>
-                <linux.enabled>ALWAYS</linux.enabled>
-                <windows.enabled>NEVER</windows.enabled>
-            </properties>
-        </profile>
-        <profile>
             <id>distWin</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
@@ -404,7 +380,6 @@
                                     <windows.app>
                                         <artifacts>
                                             <artifact>
-                                                <active>${windows.enabled}</active>
                                                 <path>
                                                     ${project.build.directory}/${project.artifactId}-${project.version}-windows-${os.arch}.zip
                                                 </path>
@@ -414,7 +389,6 @@
                                     </windows.app>
                                     <windows.app.withJre>
                                         <artifact>
-                                            <active>${windows.enabled}</active>
                                             <platform>windows</platform>
                                             <path>
                                                 ${project.build.directory}/${project.artifactId}-${project.version}-windows-${os.arch}.jre.zip
@@ -424,7 +398,6 @@
                                     <linux.app>
                                         <artifacts>
                                             <artifact>
-                                                <active>${linux.enabled}</active>
                                                 <path>
                                                     ${project.build.directory}/${project.artifactId}-${project.version}-linux-${os.arch}.tar.gz
                                                 </path>
@@ -434,7 +407,6 @@
                                     </linux.app>
                                     <linux.app.withJre>
                                         <artifact>
-                                            <active>${linux.enabled}</active>
                                             <platform>linux</platform>
                                             <path>
                                                 ${project.build.directory}/${project.artifactId}-${project.version}-linux-${os.arch}.jre.tar.gz
