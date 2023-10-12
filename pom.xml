@@ -184,7 +184,7 @@
                     <plugin>
                         <groupId>cn.vanillazi.tool</groupId>
                         <artifactId>service-maven-plugin</artifactId>
-                        <version>0.0.2-SNAPSHOT</version>
+                        <version>0.0.4-SNAPSHOT</version>
                         <executions>
                             <execution>
                                 <id>service-package</id>
@@ -229,7 +229,7 @@
                     <plugin>
                         <groupId>cn.vanillazi.tool</groupId>
                         <artifactId>service-maven-plugin</artifactId>
-                        <version>0.0.2-SNAPSHOT</version>
+                        <version>0.0.4-SNAPSHOT</version>
                         <executions>
                             <execution>
                                 <id>service-package</id>
