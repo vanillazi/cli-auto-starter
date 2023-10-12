@@ -20,6 +20,7 @@ public class ProcessRestarter {
                 .command(commands)
                 .directory(new File(workDir))
                 .start();
+        System.exit(0);
     }
 
     protected static List<String> extractCommands(){

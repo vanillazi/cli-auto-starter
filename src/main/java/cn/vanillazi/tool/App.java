@@ -130,7 +130,6 @@ public class App {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            System.exit(0);
         });
 
         var log=PropertyUtils.createPropertyClass(MenuInfo.class);
