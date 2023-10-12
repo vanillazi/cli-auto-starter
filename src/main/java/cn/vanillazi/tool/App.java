@@ -11,6 +11,7 @@ import cn.vanillazi.commons.tray.base.SystemTrayConfig;
 import cn.vanillazi.tool.config.AppConfigs;
 import cn.vanillazi.tool.config.ResourceBundles;
 
+import cn.vanillazi.tool.constant.Constants;
 import cn.vanillazi.tool.log.LogInitializer;
 import cn.vanillazi.tool.view.ConfigViewerController;
 import cn.vanillazi.tool.view.LogViewerController;
@@ -145,6 +146,7 @@ public class App {
         Image image=loadTrayIcon();
         systemTrayConfig= SystemTrayBuilder.newBuilder()
                 .withImage(image)
+                .withIconPath(DEFAULT_LOGO_FILE.getAbsolutePath())
                 .withMenuInfos(trayMenuInfos)
                 .withToolTip(ResourceBundles.appName())
                 .withSelectedExtraText(ResourceBundles.started())
