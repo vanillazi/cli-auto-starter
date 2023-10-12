@@ -5,8 +5,9 @@ import cn.vanillazi.commons.fx.property.PropertyUtils;
 import cn.vanillazi.commons.fx.view.ViewUtils;
 import cn.vanillazi.commons.fx.view.dialog.AboutDialog;
 
-import cn.vanillazi.commons.tray.MenuInfo;
-import cn.vanillazi.commons.tray.SystemTrayConfig;
+import cn.vanillazi.commons.tray.SystemTrayBuilder;
+import cn.vanillazi.commons.tray.base.MenuInfo;
+import cn.vanillazi.commons.tray.base.SystemTrayConfig;
 import cn.vanillazi.tool.config.AppConfigs;
 import cn.vanillazi.tool.config.ResourceBundles;
 
@@ -143,7 +144,7 @@ public class App {
         trayMenuInfos.add(about);
         trayMenuInfos.add(exit);
         Image image=loadTrayIcon();
-        systemTrayConfig=SystemTrayConfig.SystemTrayBuilder.newBuilder()
+        systemTrayConfig= SystemTrayBuilder.newBuilder()
                 .withImage(image)
                 .withMenuInfos(trayMenuInfos)
                 .withToolTip(ResourceBundles.appName())
