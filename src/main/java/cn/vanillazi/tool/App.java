@@ -11,7 +11,6 @@ import cn.vanillazi.commons.tray.base.SystemTrayConfig;
 import cn.vanillazi.tool.config.AppConfigs;
 import cn.vanillazi.tool.config.ResourceBundles;
 
-import cn.vanillazi.tool.constant.Constants;
 import cn.vanillazi.tool.log.LogInitializer;
 import cn.vanillazi.tool.view.ConfigViewerController;
 import cn.vanillazi.tool.view.LogViewerController;
@@ -22,8 +21,6 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
 
 import java.awt.*;
 import java.io.IOException;
@@ -143,9 +140,7 @@ public class App {
         trayMenuInfos.add(restarter);
         trayMenuInfos.add(about);
         trayMenuInfos.add(exit);
-        Image image=loadTrayIcon();
         systemTrayConfig= SystemTrayBuilder.newBuilder()
-                .withImage(image)
                 .withIconPath(DEFAULT_LOGO_FILE.getAbsolutePath())
                 .withMenuInfos(trayMenuInfos)
                 .withToolTip(ResourceBundles.appName())
@@ -181,15 +176,6 @@ public class App {
         about.setCopyright(ResourceBundles.copyright());
         about.setIconPath(ICON_PATH);
         AboutDialog.newInstance(about).show(null);
-    }
-
-    private static Image loadTrayIcon() {
-        try {
-            return ImageIO.read(DEFAULT_LOGO_FILE);
-        } catch (IOException e) {
-            logger.error(ResourceBundles.failedToLoadLogoFile(),e);
-            throw new RuntimeException(e);
-        }
     }
 
     private static List<StartupItem> loadStartupItems() throws IOException {
