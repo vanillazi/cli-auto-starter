@@ -142,9 +142,9 @@ public class App {
         trayMenuInfos.add(restarter);
         trayMenuInfos.add(about);
         trayMenuInfos.add(exit);
-        Image image=loadTrayIcon();
+
         systemTrayConfig= SystemTrayBuilder.newBuilder()
-                .withImage(image)
+                .withIconPath(DEFAULT_LOGO_FILE.getAbsolutePath())
                 .withMenuInfos(trayMenuInfos)
                 .withToolTip(ResourceBundles.appName())
                 .withSelectedExtraText(ResourceBundles.started())
@@ -179,15 +179,6 @@ public class App {
         about.setCopyright(ResourceBundles.copyright());
         about.setIconPath(ICON_PATH);
         AboutDialog.newInstance(about).show(null);
-    }
-
-    private static Image loadTrayIcon() {
-        try {
-            return ImageIO.read(DEFAULT_LOGO_FILE);
-        } catch (IOException e) {
-            logger.error(ResourceBundles.failedToLoadLogoFile(),e);
-            throw new RuntimeException(e);
-        }
     }
 
     private static List<StartupItem> loadStartupItems() throws IOException {
