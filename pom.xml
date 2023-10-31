@@ -155,6 +155,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
+                <configuration>
+                    <enablePreview>true</enablePreview>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -174,6 +177,21 @@
         </resources>
     </build>
     <profiles>
+        <profile>
+            <id>linux</id>
+            <activation>
+                <os>
+                    <family>linux</family>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>cn.vanillazi.desktop</groupId>
+                    <artifactId>appindicator4j-wrapper</artifactId>
+                    <version>0.0.1-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>distWin</id>
             <properties>
@@ -212,6 +230,9 @@
                                             <into>./${project.name}.ico</into>
                                         </resource>
                                     </resources>
+                                    <jvmFlags>
+                                        <jvmFlag>--enable-preview</jvmFlag>
+                                    </jvmFlags>
                                 </configuration>
                             </execution>
                         </executions>
@@ -253,6 +274,9 @@
                                             <into>./${project.name}.ico</into>
                                         </resource>
                                     </resources>
+                                    <jvmFlags>
+                                        <jvmFlag>--enable-preview</jvmFlag>
+                                    </jvmFlags>
                                 </configuration>
                             </execution>
                         </executions>

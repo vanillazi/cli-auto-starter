@@ -28,6 +28,7 @@ public class ProcessRestarter {
         String executableFile = SystemProperties.getJavaPath();
         var commands=new ArrayList<String>();
         commands.add(executableFile);
+        commands.add("--enable-preview");
         commands.add("-classpath");
         commands.add(SystemProperties.getJavaExeClassPath());
         if(javaCommands.contains(" ")){
