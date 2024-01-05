@@ -1,0 +1,17 @@
+name: package
+run-name: package and deploy the project
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: sdkman
+    steps:
+      - uses: https://gitea.wanazi.cn/github-mirrors/checkout.git@v3
+        with:
+          fetch-depth: 0 # all history for all branches and tags
+      - run: |
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk env install
+          sdk env
+          mvn package -PdistLinux -DwithJre=true
+          mvn package -PdistLinux -DwithJre=false
