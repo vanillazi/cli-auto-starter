@@ -9,7 +9,7 @@
     <version>0.0.7-SNAPSHOT</version>
 
     <properties>
-        <javafx.version>21</javafx.version>
+        <javafx.version>21.0.1</javafx.version>
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -19,7 +19,7 @@
     <licenses>
         <license>
             <name>Wanazi</name>
-            <url>wanazi.cn</url>
+            <url>https://www.wanazi.cn</url>
         </license>
     </licenses>
     <developers>
@@ -28,14 +28,14 @@
             <email>vanillazi@wanazi.cn</email>
         </developer>
     </developers>
-    <url>wanazi.cn</url>
+    <url>https://www.wanazi.cn</url>
     <description>A tool to auto start CLI program</description>
 
     <dependencies>
         <dependency>
             <groupId>org.fxmisc.richtext</groupId>
             <artifactId>richtextfx</artifactId>
-            <version>0.11.1</version>
+            <version>0.11.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
-            <version>5.13.0</version>
+            <version>5.14.0</version>
         </dependency>
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
@@ -115,7 +115,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.0</version>
+            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -154,7 +154,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.12.1</version>
                 <configuration>
                     <enablePreview>true</enablePreview>
                 </configuration>
@@ -291,7 +291,7 @@
                     <plugin>
                         <groupId>org.jreleaser</groupId>
                         <artifactId>jreleaser-maven-plugin</artifactId>
-                        <version>1.8.0</version>
+                        <version>1.9.0</version>
                         <inherited>false</inherited>
                         <configuration>
                             <jreleaser>
@@ -448,4 +448,17 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>vanillazi</id>
+            <url>https://repo.wanazi.cn/repository/maven-public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>vanillazi</id>
+            <url>https://repo.wanazi.cn/repository/maven-public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
