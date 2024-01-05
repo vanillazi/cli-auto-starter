@@ -43,16 +43,20 @@ public class Installer implements ExecUtils.RunOnAdmin {
                 desktopFile.createNewFile();
                 Files.writeString(desktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("create desktop file "+LINUX_USER_DESKTOP_FILE_PATH+" error",e);
             }
         }
         var autoStartDesktopFile=new File(LINUX_USER_AUTO_START_DESKTOP_FILE_PATH);
         if(!autoStartDesktopFile.exists()){
             try {
+                var parentFile=autoStartDesktopFile.getParentFile();
+                if(!parentFile.exists()){
+                    parentFile.mkdirs();
+                }
                 autoStartDesktopFile.createNewFile();
                 Files.writeString(autoStartDesktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("create auto start file "+LINUX_USER_AUTO_START_DESKTOP_FILE_PATH+" error",e);
             }
         }
     }
