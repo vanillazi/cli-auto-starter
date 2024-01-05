@@ -15,3 +15,4 @@ jobs:
           sdk env
           mvn package -PdistLinux -DwithJre=true
           mvn package -PdistLinux -DwithJre=false
+          mvn jreleaser:release -Prelease
