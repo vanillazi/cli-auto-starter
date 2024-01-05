@@ -408,6 +408,9 @@
                                                     ${project.build.directory}/${project.artifactId}-${project.version}-windows-${os.arch}.zip
                                                 </path>
                                                 <platform>windows</platform>
+                                                <extraProperties>
+                                                    <optional>true</optional>
+                                                </extraProperties>
                                             </artifact>
                                         </artifacts>
                                     </windows.app>
@@ -417,6 +420,9 @@
                                             <path>
                                                 ${project.build.directory}/${project.artifactId}-${project.version}-windows-${os.arch}.jre.zip
                                             </path>
+                                            <extraProperties>
+                                                <optional>true</optional>
+                                            </extraProperties>
                                         </artifact>
                                     </windows.app.withJre>
                                     <linux.app>
@@ -426,6 +432,9 @@
                                                     ${project.build.directory}/${project.artifactId}-${project.version}-linux-${os.arch}.tar.gz
                                                 </path>
                                                 <platform>linux</platform>
+                                                <extraProperties>
+                                                    <optional>true</optional>
+                                                </extraProperties>
                                             </artifact>
                                         </artifacts>
                                     </linux.app>
@@ -435,6 +444,9 @@
                                             <path>
                                                 ${project.build.directory}/${project.artifactId}-${project.version}-linux-${os.arch}.jre.tar.gz
                                             </path>
+                                            <extraProperties>
+                                                <optional>true</optional>
+                                            </extraProperties>
                                         </artifact>
                                     </linux.app.withJre>
                                 </distributions>
