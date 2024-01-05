@@ -1,5 +1,5 @@
 # 命令行启动器
-Windows,Ubuntu下命令行程序自启动托盘程序
+Windows,Ubuntu,Fedora下命令行程序自启动托盘程序
 ## 构建
 ### Windows
 ```powershell
