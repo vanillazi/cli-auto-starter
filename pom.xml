@@ -6,7 +6,7 @@
 
     <groupId>cn.vanillazi.tool</groupId>
     <artifactId>cli-auto-starter</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8-SNAPSHOT</version>
 
     <properties>
         <javafx.version>21.0.1</javafx.version>
@@ -306,7 +306,7 @@
                                         <owner>vanillazi</owner>
                                         <overwrite>false</overwrite>
                                         <tagName>${project.version}</tagName>
-                                        <previousTagName>0.0.6</previousTagName>
+                                        <previousTagName>0.0.7</previousTagName>
                                         <releaseName>Release ${project.version}</releaseName>
                                         <update>
                                             <enabled>true</enabled>
