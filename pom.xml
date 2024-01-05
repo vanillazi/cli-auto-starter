@@ -332,7 +332,7 @@
                                             </contributors>
                                             <contentTemplate>${project.basedir}/src/main/jreleaser/templates/changelog.tpl</contentTemplate>
                                             <hide>
-                                                <uncategorized>false</uncategorized>
+                                                <uncategorized>true</uncategorized>
                                                 <categories>
                                                     <category>merge</category>
                                                 </categories>
@@ -340,58 +340,6 @@
                                                     <contributor>[bot]</contributor>
                                                 </contributors>
                                             </hide>
-                                            <labelers>
-                                                <labeler>
-                                                    <label>bug</label>
-                                                    <title>regex:fix:</title>
-                                                    <body>修正</body>
-                                                    <order>1</order>
-                                                </labeler>
-                                                <labeler>
-                                                    <label>feature</label>
-                                                    <title>regex:feature:</title>
-                                                    <body>支持</body>
-                                                    <order>2</order>
-                                                </labeler>
-                                                <labeler>
-                                                    <label>enhancement</label>
-                                                    <title>regex:feat:</title>
-                                                    <body>新增</body>
-                                                    <order>3</order>
-                                                </labeler>
-                                            </labelers>
-                                            <categories>
-                                                <category>
-                                                    <title>Features</title>
-                                                    <key>features</key>
-                                                    <labels>feature,enhancement,feat</labels>
-                                                    <order>1</order>
-                                                </category>
-                                                <category>
-                                                    <title>Bug Fixes</title>
-                                                    <key>fixes</key>
-                                                    <labels>bug,fix</labels>
-                                                    <order>2</order>
-                                                </category>
-                                                <category>
-                                                    <title>Changes</title>
-                                                    <key>changes</key>
-                                                    <labels>perf,refactor,revert,style</labels>
-                                                    <order>3</order>
-                                                </category>
-                                                <category>
-                                                    <title>Build</title>
-                                                    <key>build</key>
-                                                    <labels>test,build,ci</labels>
-                                                    <order>4</order>
-                                                </category>
-                                                <category>
-                                                    <title>Documentation</title>
-                                                    <key>docs</key>
-                                                    <labels>docs</labels>
-                                                    <order>5</order>
-                                                </category>
-                                            </categories>
                                             <extraProperties>
                                                 <categorizeScopes>true</categorizeScopes>
                                             </extraProperties>
