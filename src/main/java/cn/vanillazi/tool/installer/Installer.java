@@ -32,29 +32,34 @@ public class Installer implements ExecUtils.RunOnAdmin {
     public static final String LINUX_USER_DESKTOP_FILE_PATH=LINUX_USER_DESKTOP_DIR+"/"+Constants.APP_ID+".desktop";
     public static final String LINUX_USER_AUTO_START_DESKTOP_FILE_PATH=System.getProperty("user.home")+"/.config/autostart/"+Constants.APP_ID+".desktop";
     protected static void createLinuxDesktopFile() {
-        var file=new File(LINUX_USER_DESKTOP_DIR);
-        if(file.exists()){
-            file.mkdirs();
-        }
-        var desktopFile=new File(LINUX_USER_DESKTOP_FILE_PATH);
         var content=createLinuxDesktop();
-        if(!desktopFile.exists()){
-            try {
-                desktopFile.createNewFile();
-                Files.writeString(desktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
-            } catch (IOException e) {
-                throw new RuntimeException("create desktop file "+LINUX_USER_DESKTOP_FILE_PATH+" error",e);
+        var file=new File(LINUX_USER_DESKTOP_DIR);
+        if(file.exists() || file.mkdirs()){
+            var desktopFile=new File(LINUX_USER_DESKTOP_FILE_PATH);
+            if(desktopFile.exists()){
+                throw new RuntimeException("the desktop file "+LINUX_USER_DESKTOP_FILE_PATH+" is existed");
+            } else {
+                try {
+                    Files.writeString(desktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+                } catch (IOException e) {
+                    throw new RuntimeException("create desktop file "+LINUX_USER_DESKTOP_FILE_PATH+" error",e);
+                }
             }
+        }else{
+            throw new RuntimeException("create the desktop dir:["+LINUX_USER_DESKTOP_FILE_PATH+"]  failed!");
         }
+
         var autoStartDesktopFile=new File(LINUX_USER_AUTO_START_DESKTOP_FILE_PATH);
-        if(!autoStartDesktopFile.exists()){
+        if(autoStartDesktopFile.exists()){
+            throw new RuntimeException("the auto start desktop file "+LINUX_USER_AUTO_START_DESKTOP_FILE_PATH+" is existed");
+        }else{
             try {
                 var parentFile=autoStartDesktopFile.getParentFile();
-                if(!parentFile.exists()){
-                    parentFile.mkdirs();
+                if(parentFile.exists() || parentFile.mkdirs()){
+                    Files.writeString(autoStartDesktopFile.toPath(), content, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+                }else{
+                    throw new RuntimeException("create the auto start desktop dir:["+parentFile.getAbsolutePath()+"]  failed!");
                 }
-                autoStartDesktopFile.createNewFile();
-                Files.writeString(autoStartDesktopFile.toPath(),content, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
                 throw new RuntimeException("create auto start file "+LINUX_USER_AUTO_START_DESKTOP_FILE_PATH+" error",e);
             }
