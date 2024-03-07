@@ -9,7 +9,7 @@
     <version>0.0.8-SNAPSHOT</version>
 
     <properties>
-        <javafx.version>21.0.1</javafx.version>
+        <javafx.version>21.0.2</javafx.version>
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -18,7 +18,7 @@
     </properties>
     <licenses>
         <license>
-            <name>Wanazi</name>
+            <name>wanazi</name>
             <url>https://www.wanazi.cn</url>
         </license>
     </licenses>
