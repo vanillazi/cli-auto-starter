@@ -184,7 +184,7 @@
             <dependencies>
                 <dependency>
                     <groupId>cn.vanillazi.desktop</groupId>
-                    <artifactId>appindicator4j-wrapper</artifactId>
+                    <artifactId>libappindicator4j-wrapper</artifactId>
                     <version>0.0.3-SNAPSHOT</version>
                 </dependency>
             </dependencies>
