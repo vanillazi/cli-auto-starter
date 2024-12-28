@@ -9,12 +9,12 @@
     <version>0.0.8-SNAPSHOT</version>
 
     <properties>
-        <javafx.version>22.0.1</javafx.version>
+        <javafx.version>23.0.1</javafx.version>
         <java.version>22</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>2.0.13</slf4j.version>
+        <slf4j.version>2.0.16</slf4j.version>
     </properties>
     <licenses>
         <license>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.fxmisc.richtext</groupId>
             <artifactId>richtextfx</artifactId>
-            <version>0.11.2</version>
+            <version>0.11.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
-            <version>5.14.0</version>
+            <version>5.16.0</version>
         </dependency>
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
@@ -115,25 +115,25 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.2</version>
+            <version>5.10.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.kohsuke</groupId>
             <artifactId>github-api</artifactId>
-            <version>1.321</version>
+            <version>1.326</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.14.0</version>
+            <version>3.17.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.16.1</version>
+            <version>2.18.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -145,7 +145,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.0-jre</version>
+            <version>33.4.0-jre</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -282,7 +282,7 @@
                     <plugin>
                         <groupId>org.jreleaser</groupId>
                         <artifactId>jreleaser-maven-plugin</artifactId>
-                        <version>1.12.0</version>
+                        <version>1.15.0</version>
                         <inherited>false</inherited>
                         <configuration>
                             <jreleaser>
