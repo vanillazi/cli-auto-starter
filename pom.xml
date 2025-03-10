@@ -9,7 +9,7 @@
     <version>0.0.8-SNAPSHOT</version>
 
     <properties>
-        <javafx.version>23.0.1</javafx.version>
+        <javafx.version>23.0.2</javafx.version>
         <java.version>22</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
