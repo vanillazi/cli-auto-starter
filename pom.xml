@@ -399,17 +399,4 @@
             </build>
         </profile>
     </profiles>
-
-    <repositories>
-        <repository>
-            <id>vanillazi</id>
-            <url>https://repo.wanazi.cn/repository/maven-public/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>vanillazi</id>
-            <url>https://repo.wanazi.cn/repository/maven-public/</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
