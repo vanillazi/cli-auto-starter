@@ -17,6 +17,7 @@
                     <items>
                         <MenuItem text="%save" fx:id="save"/>
                         <MenuItem text="%insert" fx:id="insert"/>
+                        <MenuItem text="%browse" fx:id="browse"/>
                         <MenuItem text="%format" fx:id="format"/>
                     </items>
                 </Menu>

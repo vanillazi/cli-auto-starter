@@ -9,6 +9,7 @@ import cn.vanillazi.tool.config.ResourceBundles;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.stage.FileChooser;
 import org.fxmisc.richtext.StyleClassedTextArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ public class ConfigViewerController extends BaseDialog implements Initializable 
     protected MenuItem insert;
     @FXML
     protected MenuItem format;
+    @FXML
+    protected MenuItem browse;
     @Override
     public void onInitUI() {
         stage.setTitle(ResourceBundles.config());
@@ -54,16 +57,31 @@ public class ConfigViewerController extends BaseDialog implements Initializable 
 
         insert.setOnAction(e->{
             var str=area.getText();
-            if(str.isEmpty()){
-                var arrays=new ArrayList<StartupItem>();
-                arrays.add(AppConfigs.newItem());
-                str= AppConfigs.gson.toJson(arrays);
-            }else{
-                var arrays=new ArrayList<StartupItem>(AppConfigs.parseFromJson(str));
-                arrays.add(AppConfigs.newItem());
-                str= AppConfigs.gson.toJson(arrays);
+            var arrays=new ArrayList<StartupItem>();
+            if(!str.isEmpty()){
+                arrays.addAll(AppConfigs.parseFromJson(str));
             }
+            arrays.add(AppConfigs.newItem());
+            str= AppConfigs.gson.toJson(arrays);
             area.replaceText(str);
+        });
+        browse.setOnAction(e->{
+            var str=area.getText();
+            var arrays=new ArrayList<StartupItem>();
+            if(!str.isEmpty()){
+                arrays.addAll(AppConfigs.parseFromJson(str));
+            }
+            var fc=new FileChooser() ;
+            var file=fc.showOpenDialog(stage.getOwner());
+            if(file!=null) {
+                var item=AppConfigs.newItem();
+                item.setExecutable(file.getAbsolutePath());
+                item.setName(file.getName());
+                item.setWorkDirectory(file.getParent());
+                arrays.add(item);
+                str = AppConfigs.gson.toJson(arrays);
+                area.replaceText(str);
+            }
         });
         format.setOnAction(actionEvent -> {
             var str=area.getText();
