@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.vanillazi.tool</groupId>
@@ -211,22 +213,28 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
-                                    <targetJreVersion>${java.version}</targetJreVersion>
+                                    <targetJreVersion
+                                    >${java.version}</targetJreVersion>
                                     <withJre>false</withJre>
                                     <outputZip>true</outputZip>
-                                    <customRuntimeImage>true</customRuntimeImage>
-                                    <scriptConfigFile>${project.basedir}/build-config/build.properties</scriptConfigFile>
+                                    <customRuntimeImage
+                                    >true</customRuntimeImage>
+                                    <scriptConfigFile
+                                    >${project.basedir}/build-config/build.properties</scriptConfigFile>
                                     <resources>
                                         <resource>
-                                            <from>${project.basedir}/asset</from>
+                                            <from
+                                            >${project.basedir}/asset</from>
                                             <into>asset</into>
                                         </resource>
                                         <resource>
-                                            <from>${project.basedir}/tools</from>
+                                            <from
+                                            >${project.basedir}/tools</from>
                                             <into>.</into>
                                         </resource>
                                         <resource>
-                                            <from>${project.basedir}/asset/logo.ico</from>
+                                            <from
+                                            >${project.basedir}/asset/logo.ico</from>
                                             <into>./${project.name}.ico</into>
                                         </resource>
                                     </resources>
@@ -256,18 +264,23 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
-                                    <targetJreVersion>${java.version}</targetJreVersion>
+                                    <targetJreVersion
+                                    >${java.version}</targetJreVersion>
                                     <withJre>true</withJre>
                                     <outputZip>true</outputZip>
-                                    <customRuntimeImage>true</customRuntimeImage>
-                                    <scriptConfigFile>${project.basedir}/build-config/build.properties</scriptConfigFile>
+                                    <customRuntimeImage
+                                    >true</customRuntimeImage>
+                                    <scriptConfigFile
+                                    >${project.basedir}/build-config/build.properties</scriptConfigFile>
                                     <resources>
                                         <resource>
-                                            <from>${project.basedir}/asset</from>
+                                            <from
+                                            >${project.basedir}/asset</from>
                                             <into>asset</into>
                                         </resource>
                                         <resource>
-                                            <from>${project.basedir}/asset/logo.ico</from>
+                                            <from
+                                            >${project.basedir}/asset/logo.ico</from>
                                             <into>./${project.name}.ico</into>
                                         </resource>
                                     </resources>
@@ -291,9 +304,11 @@
                             <jreleaser>
                                 <project>
                                     <java>
-                                        <mainClass>cn.vanillazi.tool.App</mainClass>
+                                        <mainClass
+                                        >cn.vanillazi.tool.App</mainClass>
                                     </java>
-                                    <copyright>CopyrightÂ© 2023 Wanazi. All Rights Reserved.</copyright>
+                                    <copyright
+                                    >CopyrightÂ© 2023 Wanazi. All Rights Reserved.</copyright>
                                 </project>
                                 <release>
                                     <github>
@@ -301,7 +316,8 @@
                                         <overwrite>false</overwrite>
                                         <tagName>${project.version}</tagName>
                                         <previousTagName>0.0.7</previousTagName>
-                                        <releaseName>Release ${project.version}</releaseName>
+                                        <releaseName
+                                        >Release ${project.version}</releaseName>
                                         <update>
                                             <enabled>true</enabled>
                                             <sections>
@@ -314,30 +330,40 @@
                                             <enabled>true</enabled>
                                             <sort>DESC</sort>
                                             <links>false</links>
-                                            <skipMergeCommits>false</skipMergeCommits>
+                                            <skipMergeCommits
+                                            >false</skipMergeCommits>
                                             <formatted>ALWAYS</formatted>
                                             <preset>gitmoji</preset>
-                                            <format>- {{commitShortHash}} {{commitTitle}}</format>
-                                            <categoryTitleFormat>### {{categoryTitle}}</categoryTitleFormat>
-                                            <contributorsTitleFormat>### Contributors'</contributorsTitleFormat>
+                                            <format
+                                            >- {{commitShortHash}} {{commitTitle}}</format>
+                                            <categoryTitleFormat
+                                            >### {{categoryTitle}}</categoryTitleFormat>
+                                            <contributorsTitleFormat
+                                            >### Contributors'</contributorsTitleFormat>
                                             <contributors>
                                                 <enabled>true</enabled>
-                                                <format>- {{contributorName}} ({{contributorUsernameAsLink}})</format>
+                                                <format
+                                                >- {{contributorName}} ({{contributorUsernameAsLink}})</format>
                                             </contributors>
-                                            <contentTemplate>${project.basedir}/src/main/jreleaser/templates/changelog.tpl</contentTemplate>
+                                            <contentTemplate
+                                            >${project.basedir}/src/main/jreleaser/templates/changelog.tpl</contentTemplate>
                                             <hide>
-                                                <uncategorized>true</uncategorized>
+                                                <uncategorized
+                                                >true</uncategorized>
                                                 <categories>
                                                     <category>merge</category>
                                                 </categories>
                                                 <contributors>
-                                                    <contributor>[bot]</contributor>
+                                                    <contributor
+                                                    >[bot]</contributor>
                                                 </contributors>
                                             </hide>
                                             <extraProperties>
-                                                <categorizeScopes>true</categorizeScopes>
+                                                <categorizeScopes
+                                                >true</categorizeScopes>
                                             </extraProperties>
-                                            <preset>conventional-commits</preset>
+                                            <preset
+                                            >conventional-commits</preset>
                                             <formatted>ALWAYS</formatted>
                                         </changelog>
                                     </github>
@@ -402,4 +428,18 @@
             </build>
         </profile>
     </profiles>
+
+   	<repositories>
+           <repository>
+               <id>vanillazi</id>
+               <url>https://repo.wanazi.cn/repository/maven-public/</url>
+           </repository>
+       </repositories>
+       <pluginRepositories>
+           <pluginRepository>
+               <id>vanillazi</id>
+               <url>https://repo.wanazi.cn/repository/maven-public/</url>
+           </pluginRepository>
+       </pluginRepositories>
+
 </project>
