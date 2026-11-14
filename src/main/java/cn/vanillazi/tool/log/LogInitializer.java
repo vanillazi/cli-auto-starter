@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 public class LogInitializer {
 
     public static SubmissionPublisher<LogRecord> publisher=new SubmissionPublisher<>();
+
     public static void init(){
         var root=Logger.getLogger("");
         root.addHandler(new Handler() {

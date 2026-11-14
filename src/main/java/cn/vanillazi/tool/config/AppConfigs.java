@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class AppConfigs {
+
     private static final Logger logger= LoggerFactory.getLogger(AppConfigs.class.getName());
+
     public static StartupItem newItem(){
         var si=new StartupItem();
         si.setArgs(Arrays.asList(ResourceBundles.newItemArgsPrefix()+1,ResourceBundles.newItemArgsPrefix()+2));
@@ -22,6 +24,7 @@ public class AppConfigs {
         si.setDescription(ResourceBundles.newItemDescription());
         si.setWorkDirectory(ResourceBundles.newItemWorkDirectory());
         si.setAutoStart(true);
+        si.setCron(ResourceBundles.newItemCron());
         return si;
     }
 
@@ -29,7 +32,7 @@ public class AppConfigs {
 
     public static List<StartupItem> parseFromJson(String json){
         var type=new TypeToken<List<StartupItem>>(){}.getType();
-        if(json.isEmpty() || json.isBlank()){
+        if(json.isBlank()){
             return Collections.emptyList();
         }
         try {

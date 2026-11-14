@@ -12,6 +12,7 @@ import cn.vanillazi.tool.config.AppConfigs;
 import cn.vanillazi.tool.config.ResourceBundles;
 
 import cn.vanillazi.tool.log.LogInitializer;
+import cn.vanillazi.tool.task.ProcessCronTaskScheduler;
 import cn.vanillazi.tool.view.ConfigViewerController;
 import cn.vanillazi.tool.view.LogViewerController;
 
@@ -19,6 +20,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 
 import javafx.stage.Stage;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +94,8 @@ public class App {
     }
 
     public static SystemTrayConfig systemTrayConfig;
-    private static void onInitUI() throws IOException, AWTException {
+    public static ProcessCronTaskScheduler processCronTaskScheduler;
+    private static void onInitUI() throws IOException, AWTException, SchedulerException {
 
         Platform.setImplicitExit(false);
 
@@ -149,6 +152,14 @@ public class App {
                 .enableMultiSelectMode()
                 .build();
         autoStart();
+
+        var cronItems=startupItems.stream()
+                .filter(it->it.getCron()!=null && !it.getCron().isEmpty())
+                .toList();
+        if(!cronItems.isEmpty()){
+            processCronTaskScheduler=new ProcessCronTaskScheduler(cronItems);
+            processCronTaskScheduler.start();
+        }
     }
 
     public static void autoStart(){
@@ -165,6 +176,13 @@ public class App {
                 context.stop();
             }
         });
+        if(processCronTaskScheduler!=null){
+            try {
+                processCronTaskScheduler.shutdown();
+            } catch (SchedulerException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     private static void editConfigFile() {

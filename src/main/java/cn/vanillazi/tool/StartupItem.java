@@ -15,6 +15,7 @@ public class StartupItem {
     private List<String> args;
     private String description;
     private Boolean autoStart;
+    private String cron;
 
     public String getName() {
         return name;
@@ -62,6 +63,14 @@ public class StartupItem {
 
     public void setWorkDirectory(String workDirectory) {
         this.workDirectory = workDirectory;
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
     }
 
     public String digest(){

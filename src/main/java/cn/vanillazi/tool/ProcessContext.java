@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class ProcessContext implements Runnable{
 
-    private Logger logger;
+    private final Logger logger;
 
-    private StartupItem startupItem;
-    private CommandProcessListener commandProcessListener;
+    private final StartupItem startupItem;
+    private final CommandProcessListener commandProcessListener;
 
     private volatile Thread thread;
 
@@ -91,7 +91,7 @@ public class ProcessContext implements Runnable{
         }
         if(process!=null) {
             process.onExit().whenComplete((p,e)->{
-                logger.info("process existed:"+p.exitValue());
+                logger.info("process existed:{}",p.exitValue());
                 thread=null;
                 commandProcessListener.onFinished();
             });

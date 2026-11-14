@@ -26,6 +26,7 @@ import static cn.vanillazi.tool.constant.Constants.DEFAULT_CONF_PATH;
 import static cn.vanillazi.tool.constant.Constants.ICON_PATH;
 
 public class ConfigViewerController extends BaseDialog implements Initializable {
+
     private static final Logger logger= LoggerFactory.getLogger(ConfigViewerController.class.getName());
     @FXML
     protected StyleClassedTextArea area;
@@ -37,6 +38,7 @@ public class ConfigViewerController extends BaseDialog implements Initializable 
     protected MenuItem format;
     @FXML
     protected MenuItem browse;
+
     @Override
     public void onInitUI() {
         stage.setTitle(ResourceBundles.config());
