@@ -70,12 +70,12 @@
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
             <artifactId>commons-fx</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
             <artifactId>commons-tray</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
             <artifactId>commons-win32</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -105,13 +105,13 @@
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
             <artifactId>resource-bundle-codegen</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.vanillazi.commons</groupId>
             <artifactId>fx-codegen</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -161,7 +161,7 @@
                         <path>
                             <groupId>cn.vanillazi.commons</groupId>
                             <artifactId>resource-bundle-codegen</artifactId>
-                            <version>0.0.2-SNAPSHOT</version>
+                            <version>0.0.2</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
